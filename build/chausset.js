@@ -2963,6 +2963,7 @@ _html2canvas.Renderer.Canvas = function(options) {
   var onload = function() {
     // remove loader
     var loader = document.getElementById("chausset-loader");
+    loader.style.opacity = 0;
 
     var proxyURL = "query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.uri%20where%20url%3D%40url&format=json",
       protocol = "http://";

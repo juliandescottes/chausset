@@ -12,3 +12,9 @@ packages:
     files:
       - lib/html2canvas.js
       - src/chausset.js
+  bookmarklet.url:
+    visitors:
+      - uglify
+      - ./bookmarkletBuilder.js
+    files:
+      - src/bookmarklet.js
