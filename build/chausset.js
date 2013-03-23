@@ -1,219 +1,2993 @@
-(function(n,r,p){function w(e){j.logging&&(n.console&&n.console.log)&&n.console.log(e)}function ba(e,c,a,f,b,g){c=j.Util.getCSS(c,e,b);var h;1===c.length&&(b=c[0],c=[],c[0]=b,c[1]=b);-1!==c[0].toString().indexOf("%")?(h=parseFloat(c[0])/100,b=a.width*h,"backgroundSize"!==e&&(b-=(g||f).width*h)):b="backgroundSize"===e?"auto"===c[0]?f.width:c[0].match(/contain|cover/)?j.Util.resizeBounds(f.width,f.height,a.width,a.height,c[0]).width:parseInt(c[0],10):parseInt(c[0],10);"auto"===c[1]?a=b/f.width*f.height:
--1!==c[1].toString().indexOf("%")?(h=parseFloat(c[1])/100,a=a.height*h,"backgroundSize"!==e&&(a-=(g||f).height*h)):a=parseInt(c[1],10);return[b,a]}var j={},M;j.Util={};var ea=String.prototype.trim;j.Util.trimText=function(e){return ea?ea.apply(e):((e||"")+"").replace(/^\s+|\s+$/g,"")};j.Util.parseBackgroundImage=function(e){var c,a,f,b,g,h=[],m,d=0,j=0,t,n,s=function(){if(c){'"'===a.substr(0,1)&&(a=a.substr(1,a.length-2));a&&n.push(a);if("-"===c.substr(0,1)&&0<(b=c.indexOf("-",1)+1))f=c.substr(0,
-b),c=c.substr(b);h.push({prefix:f,method:c.toLowerCase(),value:g,args:n})}n=[];c=f=a=g=""};s();for(var D=0,w=e.length;D<w;D++)if(m=e[D],!(0===d&&-1<" \r\n\t".indexOf(m))){switch(m){case '"':t?t===m&&(t=null):t=m;break;case "(":if(t)break;else if(0===d){d=1;g+=m;continue}else j++;break;case ")":if(t)break;else if(1===d)if(0===j){d=0;g+=m;s();continue}else j--;break;case ",":if(!t)if(0===d){s();continue}else if(1===d&&0===j&&!c.match(/^url$/i)){n.push(a);a="";g+=m;continue}}g+=m;0===d?c+=m:a+=m}s();
-return h};j.Util.Bounds=function(e){var c={};if(e.getBoundingClientRect)return e=e.getBoundingClientRect(),c.top=e.top,c.bottom=e.bottom||e.top+e.height,c.left=e.left,c.width=e.width||e.right-e.left,c.height=e.height||e.bottom-e.top,c};j.Util.getCSS=function(e,c,a){function f(b,a){var c=e.runtimeStyle&&e.runtimeStyle[b],f,g=e.style;!/^-?[0-9]+\.?[0-9]*(?:px)?$/i.test(a)&&/^-?\d/.test(a)&&(f=g.left,c&&(e.runtimeStyle.left=e.currentStyle.left),g.left="fontSize"===b?"1em":a||0,a=g.pixelLeft+"px",g.left=
-f,c&&(e.runtimeStyle.left=c));return!/^(thin|medium|thick)$/i.test(a)?Math.round(parseFloat(a))+"px":a}var b,g=c.match(/^background(Size|Position)$/);void 0!==e&&(M=r.defaultView.getComputedStyle(e,null));b=M[c];if(g){if(b=(b||"").split(","),b=b[a||0]||b[0]||"auto",b=j.Util.trimText(b).split(" "),!("backgroundSize"===c&&(!b[0]||b[0].match(/cover|contain|auto/)))){b[0]=-1===b[0].indexOf("%")?f(c+"X",b[0]):b[0];if(b[1]===p){if("backgroundSize"===c)return b[1]="auto",b;b[1]=b[0]}b[1]=-1===b[1].indexOf("%")?
-f(c+"Y",b[1]):b[1]}}else/border(Top|Bottom)(Left|Right)Radius/.test(c)&&(c=b.split(" "),1>=c.length&&(c[1]=c[0]),c[0]=parseInt(c[0],10),c[1]=parseInt(c[1],10),b=c);return b};j.Util.resizeBounds=function(e,c,a,f,b){e/=c;!b||"auto"===b?(b=a,a=f):a/f<e^"contain"===b?(a=f,b=f*e):(b=a,a/=e);return{width:b,height:a}};j.Util.BackgroundPosition=function(e,c,a,f,b){e=ba("backgroundPosition",e,c,a,f,b);return{left:e[0],top:e[1]}};j.Util.BackgroundSize=function(e,c,a,f){e=ba("backgroundSize",e,c,a,f);return{width:e[0],
-height:e[1]}};j.Util.Extend=function(e,c){for(var a in e)e.hasOwnProperty(a)&&(c[a]=e[a]);return c};j.Util.Children=function(e){var c;try{var a;if(e.nodeName&&"IFRAME"===e.nodeName.toUpperCase())a=e.contentDocument||e.contentWindow.document;else{var f=e.childNodes;e=[];if(null!==f){var b=e.length,g=0;if("number"===typeof f.length)for(var h=f.length;g<h;g++)e[b++]=f[g];else for(;f[g]!==p;)e[b++]=f[g++];e.length=b}a=e}c=a}catch(m){w("html2canvas.Util.Children failed with exception: "+m.message),c=[]}return c};
-var K={};j.Util.Font=function(e,c,a){if(K[e+"-"+c]!==p)return K[e+"-"+c];var f=a.createElement("div"),b=a.createElement("img"),g=a.createElement("span"),h;f.style.visibility="hidden";f.style.fontFamily=e;f.style.fontSize=c;f.style.margin=0;f.style.padding=0;a.body.appendChild(f);b.src="data:image/gif;base64,R0lGODlhAQABAIABAP///wAAACwAAAAAAQABAAACAkQBADs=";b.width=1;b.height=1;b.style.margin=0;b.style.padding=0;b.style.verticalAlign="baseline";g.style.fontFamily=e;g.style.fontSize=c;g.style.margin=
-0;g.style.padding=0;g.appendChild(a.createTextNode("Hidden Text"));f.appendChild(g);f.appendChild(b);h=b.offsetTop-g.offsetTop+1;f.removeChild(g);f.appendChild(a.createTextNode("Hidden Text"));f.style.lineHeight="normal";b.style.verticalAlign="super";b={baseline:h,lineWidth:1,middle:b.offsetTop-f.offsetTop+1};K[e+"-"+c]=b;a.body.removeChild(f);return b};j.Generate={};var N=[/^(-webkit-linear-gradient)\(([a-z\s]+)([\w\d\.\s,%\(\)]+)\)$/,/^(-o-linear-gradient)\(([a-z\s]+)([\w\d\.\s,%\(\)]+)\)$/,/^(-webkit-gradient)\((linear|radial),\s((?:\d{1,3}%?)\s(?:\d{1,3}%?),\s(?:\d{1,3}%?)\s(?:\d{1,3}%?))([\w\d\.\s,%\(\)\-]+)\)$/,
-/^(-moz-linear-gradient)\(((?:\d{1,3}%?)\s(?:\d{1,3}%?))([\w\d\.\s,%\(\)]+)\)$/,/^(-webkit-radial-gradient)\(((?:\d{1,3}%?)\s(?:\d{1,3}%?)),\s(\w+)\s([a-z\-]+)([\w\d\.\s,%\(\)]+)\)$/,/^(-moz-radial-gradient)\(((?:\d{1,3}%?)\s(?:\d{1,3}%?)),\s(\w+)\s?([a-z\-]*)([\w\d\.\s,%\(\)]+)\)$/,/^(-o-radial-gradient)\(((?:\d{1,3}%?)\s(?:\d{1,3}%?)),\s(\w+)\s([a-z\-]+)([\w\d\.\s,%\(\)]+)\)$/];j.Generate.parseGradient=function(e,c){var a,f,b=N.length,g,h,m,d;for(f=0;f<b&&!(g=e.match(N[f]));f+=1);if(g)switch(g[1]){case "-webkit-linear-gradient":case "-o-linear-gradient":a=
-{type:"linear",x0:null,y0:null,x1:null,y1:null,colorStops:[]};if(b=g[2].match(/\w+/g)){h=b.length;for(f=0;f<h;f+=1)switch(b[f]){case "top":a.y0=0;a.y1=c.height;break;case "right":a.x0=c.width;a.x1=0;break;case "bottom":a.y0=c.height;a.y1=0;break;case "left":a.x0=0,a.x1=c.width}}null===a.x0&&null===a.x1&&(a.x0=a.x1=c.width/2);null===a.y0&&null===a.y1&&(a.y0=a.y1=c.height/2);if(b=g[3].match(/((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\)(?:\s\d{1,3}(?:%|px))?)+/g)){h=b.length;m=1/Math.max(h-
-1,1);for(f=0;f<h;f+=1)d=b[f].match(/((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\))\s*(\d{1,3})?(%|px)?/),d[2]?(g=parseFloat(d[2]),g="%"===d[3]?g/100:g/c.width):g=f*m,a.colorStops.push({color:d[1],stop:g})}break;case "-webkit-gradient":a={type:"radial"===g[2]?"circle":g[2],x0:0,y0:0,x1:0,y1:0,colorStops:[]};if(b=g[3].match(/(\d{1,3})%?\s(\d{1,3})%?,\s(\d{1,3})%?\s(\d{1,3})%?/))a.x0=b[1]*c.width/100,a.y0=b[2]*c.height/100,a.x1=b[3]*c.width/100,a.y1=b[4]*c.height/100;if(b=g[4].match(/((?:from|to|color-stop)\((?:[0-9\.]+,\s)?(?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\)\))+/g)){h=
-b.length;for(f=0;f<h;f+=1)d=b[f].match(/(from|to|color-stop)\(([0-9\.]+)?(?:,\s)?((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\))\)/),g=parseFloat(d[2]),"from"===d[1]&&(g=0),"to"===d[1]&&(g=1),a.colorStops.push({color:d[3],stop:g})}break;case "-moz-linear-gradient":a={type:"linear",x0:0,y0:0,x1:0,y1:0,colorStops:[]};if(b=g[2].match(/(\d{1,3})%?\s(\d{1,3})%?/))a.x0=b[1]*c.width/100,a.y0=b[2]*c.height/100,a.x1=c.width-a.x0,a.y1=c.height-a.y0;if(b=g[3].match(/((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\)(?:\s\d{1,3}%)?)+/g)){h=
-b.length;m=1/Math.max(h-1,1);for(f=0;f<h;f+=1)d=b[f].match(/((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\))\s*(\d{1,3})?(%)?/),d[2]?(g=parseFloat(d[2]),d[3]&&(g/=100)):g=f*m,a.colorStops.push({color:d[1],stop:g})}break;case "-webkit-radial-gradient":case "-moz-radial-gradient":case "-o-radial-gradient":a={type:"circle",x0:0,y0:0,x1:c.width,y1:c.height,cx:0,cy:0,rx:0,ry:0,colorStops:[]};if(b=g[2].match(/(\d{1,3})%?\s(\d{1,3})%?/))a.cx=b[1]*c.width/100,a.cy=b[2]*c.height/100;b=g[3].match(/\w+/);
-d=g[4].match(/[a-z\-]*/);if(b&&d)switch(d[0]){case "farthest-corner":case "cover":case "":f=Math.sqrt(Math.pow(a.cx,2)+Math.pow(a.cy,2));b=Math.sqrt(Math.pow(a.cx,2)+Math.pow(a.y1-a.cy,2));h=Math.sqrt(Math.pow(a.x1-a.cx,2)+Math.pow(a.y1-a.cy,2));d=Math.sqrt(Math.pow(a.x1-a.cx,2)+Math.pow(a.cy,2));a.rx=a.ry=Math.max(f,b,h,d);break;case "closest-corner":f=Math.sqrt(Math.pow(a.cx,2)+Math.pow(a.cy,2));b=Math.sqrt(Math.pow(a.cx,2)+Math.pow(a.y1-a.cy,2));h=Math.sqrt(Math.pow(a.x1-a.cx,2)+Math.pow(a.y1-
-a.cy,2));d=Math.sqrt(Math.pow(a.x1-a.cx,2)+Math.pow(a.cy,2));a.rx=a.ry=Math.min(f,b,h,d);break;case "farthest-side":"circle"===b[0]?a.rx=a.ry=Math.max(a.cx,a.cy,a.x1-a.cx,a.y1-a.cy):(a.type=b[0],a.rx=Math.max(a.cx,a.x1-a.cx),a.ry=Math.max(a.cy,a.y1-a.cy));break;case "closest-side":case "contain":"circle"===b[0]?a.rx=a.ry=Math.min(a.cx,a.cy,a.x1-a.cx,a.y1-a.cy):(a.type=b[0],a.rx=Math.min(a.cx,a.x1-a.cx),a.ry=Math.min(a.cy,a.y1-a.cy))}if(b=g[5].match(/((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\)(?:\s\d{1,3}(?:%|px))?)+/g)){h=
-b.length;m=1/Math.max(h-1,1);for(f=0;f<h;f+=1)d=b[f].match(/((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\))\s*(\d{1,3})?(%|px)?/),d[2]?(g=parseFloat(d[2]),g="%"===d[3]?g/100:g/c.width):g=f*m,a.colorStops.push({color:d[1],stop:g})}}return a};j.Generate.Gradient=function(e,c){if(!(0===c.width||0===c.height)){var a=r.createElement("canvas"),f=a.getContext("2d"),b,g,h,m;a.width=c.width;a.height=c.height;if(b=j.Generate.parseGradient(e,c))if("linear"===b.type){g=f.createLinearGradient(b.x0,
-b.y0,b.x1,b.y1);h=0;for(m=b.colorStops.length;h<m;h+=1)try{g.addColorStop(b.colorStops[h].stop,b.colorStops[h].color)}catch(d){w(["failed to add color stop: ",d,"; tried to add: ",b.colorStops[h],"; stop: ",h,"; in: ",e])}f.fillStyle=g;f.fillRect(0,0,c.width,c.height)}else if("circle"===b.type){g=f.createRadialGradient(b.cx,b.cy,0,b.cx,b.cy,b.rx);h=0;for(m=b.colorStops.length;h<m;h+=1)try{g.addColorStop(b.colorStops[h].stop,b.colorStops[h].color)}catch(n){w(["failed to add color stop: ",n,"; tried to add: ",
-b.colorStops[h],"; stop: ",h,"; in: ",e])}f.fillStyle=g;f.fillRect(0,0,c.width,c.height)}else if("ellipse"===b.type){var t=r.createElement("canvas"),p=t.getContext("2d");g=Math.max(b.rx,b.ry);var s=2*g;t.width=t.height=s;g=p.createRadialGradient(b.rx,b.ry,0,b.rx,b.ry,g);h=0;for(m=b.colorStops.length;h<m;h+=1)try{g.addColorStop(b.colorStops[h].stop,b.colorStops[h].color)}catch(D){w(["failed to add color stop: ",D,"; tried to add: ",b.colorStops[h],"; stop: ",h,"; in: ",e])}p.fillStyle=g;p.fillRect(0,
-0,s,s);f.fillStyle=b.colorStops[h-1].color;f.fillRect(0,0,a.width,a.height);f.drawImage(t,b.cx-b.rx,b.cy-b.ry,2*b.rx,2*b.ry)}return a}};j.Generate.ListAlpha=function(e){var c="",a;do a=e%26,c=String.fromCharCode(a+64)+c,e/=26;while(26<26*e);return c};j.Generate.ListRoman=function(e){var c="M CM D CD C XC L XL X IX V IV I".split(" "),a=[1E3,900,500,400,100,90,50,40,10,9,5,4,1],f="",b,g=c.length;if(0>=e||4E3<=e)return e;for(b=0;b<g;b+=1)for(;e>=a[b];)e-=a[b],f+=c[b];return f};j.Parse=function(e,c){function a(){return Math.max(Math.max(x.body.scrollWidth,
-x.documentElement.scrollWidth),Math.max(x.body.offsetWidth,x.documentElement.offsetWidth),Math.max(x.body.clientWidth,x.documentElement.clientWidth))}function f(){return Math.max(Math.max(x.body.scrollHeight,x.documentElement.scrollHeight),Math.max(x.body.offsetHeight,x.documentElement.offsetHeight),Math.max(x.body.clientHeight,x.documentElement.clientHeight))}function b(a,b){var c=parseInt(u(a,b),10);return isNaN(c)?0:c}function g(a,b,c,qa,e,d){"transparent"!==d&&(a.setVariable("fillStyle",d),a.fillRect(b,
-c,qa,e))}function h(a,b){switch(b){case "lowercase":return a.toLowerCase();case "capitalize":return a.replace(/(^|\s|:|-|\(|\))([a-z])/g,function(a,b,A){if(0<a.length)return b+A.toUpperCase()});case "uppercase":return a.toUpperCase();default:return a}}function m(a,b,c,e){var d=u(b,"fontWeight"),f=u(b,"fontFamily"),g=u(b,"fontSize");switch(parseInt(d,10)){case 401:d="bold";break;case 400:d="normal"}a.setVariable("fillStyle",e);a.setVariable("font",[u(b,"fontStyle"),u(b,"fontVariant"),d,g,f].join(" "));
-a.setVariable("textAlign","left");if("none"!==c)return j.Util.Font(f,g,x)}function d(a,b,d){var e=d.ctx,f=u(a,"color"),ia=u(a,"textDecoration");d=u(a,"textAlign");var v,E,t=b,s=0;if(0<j.Util.trimText(b.nodeValue).length){b.nodeValue=h(b.nodeValue,u(a,"textTransform"));d=d.replace(["-webkit-auto"],["auto"]);var F;if(F=!c.letterRendering){if(d=/^(left|right|justify|auto)$/.test(d))d=u(a,"letterSpacing"),d=/^(normal|none|0px)$/.test(d);F=d}E=F?b.nodeValue.split(/(\b| )/):b.nodeValue.split("");v=m(e,
-a,ia,f);c.chinese&&E.forEach(function(a,b){/.*[\u4E00-\u9FA5].*$/.test(a)&&(a=a.split(""),a.unshift(b,1),E.splice.apply(E,a))});E.forEach(function(a,b){var A;A=b<E.length-1;var c;if(K.rangeBounds){if("none"!==ia||0!==j.Util.trimText(a).length){A=t;c=s;var d=x.createRange();d.setStart(A,c);d.setEnd(A,c+a.length);c=d.getBoundingClientRect()}s+=a.length}else if(t&&"string"===typeof t.nodeValue){A=A?t.splitText(a.length):null;var $=t;c=$.parentNode;var d=x.createElement("wrapper"),pa=$.cloneNode(!0);
-d.appendChild($.cloneNode(!0));c.replaceChild(d,$);$=j.Util.Bounds(d);c.replaceChild(pa,d);c=$;t=A}if(A=c)switch(c=A.left,d=A.bottom,null!==a&&0<j.Util.trimText(a).length&&e.fillText(a,c,d),ia){case "underline":g(e,A.left,Math.round(A.top+v.baseline+v.lineWidth),A.width,1,f);break;case "overline":g(e,A.left,Math.round(A.top),A.width,1,f);break;case "line-through":g(e,A.left,Math.ceil(A.top+v.middle+v.lineWidth),A.width,1,f)}})}}function ca(a){return(a=e[a])&&!0===a.succeeded?a.img:!1}function t(a,
-b){var c=Math.max(a.left,b.left),d=Math.max(a.top,b.top),e=Math.min(a.left+a.width,b.left+b.width),f=Math.min(a.top+a.height,b.top+b.height);return{left:c,top:d,width:e-c,height:f-d}}function R(a,c,d,e,f){var g=b(c,"paddingLeft"),h=b(c,"paddingTop"),m=b(c,"paddingRight");c=b(c,"paddingBottom");da(a,d,0,0,d.width,d.height,e.left+g+f[3].width,e.top+h+f[0].width,e.width-(f[1].width+f[3].width+g+m),e.height-(f[0].width+f[2].width+h+c))}function s(a,b,c,d){var e=function(a,b,c){return{x:a.x+(b.x-a.x)*
-c,y:a.y+(b.y-a.y)*c}};return{start:a,startControl:b,endControl:c,end:d,subdivide:function(f){var g=e(a,b,f),h=e(b,c,f),m=e(c,d,f),j=e(g,h,f),h=e(h,m,f);f=e(j,h,f);return[s(a,g,j,f),s(f,h,m,d)]},curveTo:function(a){a.push(["bezierCurve",b.x,b.y,c.x,c.y,d.x,d.y])},curveToReversed:function(d){d.push(["bezierCurve",c.x,c.y,b.x,b.y,a.x,a.y])}}}function D(a,b,c,d,e,f,g){0<b[0]||0<b[1]?(a.push(["line",d[0].start.x,d[0].start.y]),d[0].curveTo(a),d[1].curveTo(a)):a.push(["line",f,g]);(0<c[0]||0<c[1])&&a.push(["line",
-e[0].start.x,e[0].start.y])}function Z(a,b,c,d,e,f,g){var h=[];0<b[0]||0<b[1]?(h.push(["line",d[1].start.x,d[1].start.y]),d[1].curveTo(h)):h.push(["line",a.c1[0],a.c1[1]]);0<c[0]||0<c[1]?(h.push(["line",f[0].start.x,f[0].start.y]),f[0].curveTo(h),h.push(["line",g[0].end.x,g[0].end.y]),g[0].curveToReversed(h)):(h.push(["line",a.c2[0],a.c2[1]]),h.push(["line",a.c3[0],a.c3[1]]));0<b[0]||0<b[1]?(h.push(["line",e[1].end.x,e[1].end.y]),e[1].curveToReversed(h)):h.push(["line",a.c4[0],a.c4[1]]);return h}
-function ja(a,b){var c=a.drawShape();b.forEach(function(a,b){c[0===b?"moveTo":a[0]+"To"].apply(null,a.slice(1))});return c}function J(a,b,c){var e=x.createElement("valuewrap");"lineHeight textAlign fontFamily color fontSize paddingLeft paddingTop width height border borderLeftWidth borderTopWidth".split(" ").forEach(function(b){try{e.style[b]=u(a,b)}catch(c){w("html2canvas: Parse: Exception caught in renderFormValue: "+c.message)}});e.style.borderColor="black";e.style.borderStyle="solid";e.style.display=
-"block";e.style.position="absolute";if(/^(submit|reset|button|text|password)$/.test(a.type)||"SELECT"===a.nodeName)e.style.lineHeight=u(a,"height");e.style.top=b.top+"px";e.style.left=b.left+"px";b="SELECT"===a.nodeName?(a.options[a.selectedIndex]||0).text:a.value;b||(b=a.placeholder);b=x.createTextNode(b);e.appendChild(b);fa.appendChild(e);d(a,b,c);fa.removeChild(e)}function da(a){a.drawImage.apply(a,Array.prototype.slice.call(arguments,1))}function ma(a,b){var c=n.getComputedStyle(a,b);if(c&&c.content&&
-!("none"===c.content||"-moz-alt-content"===c.content)){var d=c.content+"",e=d.substr(0,1);e===d.substr(d.length-1)&&e.match(/'|"/)&&(d=d.substr(1,d.length-2));var e="url"===d.substr(0,3),f=r.createElement(e?"img":"span");f.className=Y+"-before "+Y+"-after";Object.keys(c).filter(v).forEach(function(a){f.style[a]=c[a]});e?f.src=j.Util.parseBackgroundImage(d)[0].args[0]:f.innerHTML=d;return f}}function v(a){return isNaN(n.parseInt(a,10))}function E(a,b,c,d){var e=Math.round(d.left+c.left);c=Math.round(d.top+
-c.top);a.createPattern(b);a.translate(e,c);a.fill();a.translate(-e,-c)}function F(a,b,c,d,e,f,g,h){var m=[];m.push(["line",Math.round(e),Math.round(f)]);m.push(["line",Math.round(e+g),Math.round(f)]);m.push(["line",Math.round(e+g),Math.round(h+f)]);m.push(["line",Math.round(e),Math.round(h+f)]);ja(a,m);a.save();a.clip();E(a,b,c,d);a.restore()}function ra(a,b,c,d,e){var f=j.Util.BackgroundSize(a,b,d,e),g=j.Util.BackgroundPosition(a,b,d,e,f);a=u(a,"backgroundRepeat").split(",").map(function(a){return a.trim()});
-if(!(d.width===f.width&&d.height===f.height)){var h,m=x.createElement("canvas");m.width=f.width;m.height=f.height;h=m.getContext("2d");da(h,d,0,0,d.width,d.height,0,0,f.width,f.height);d=m}a=a[e]||a[0];switch(a){case "repeat-x":F(c,d,g,b,b.left,b.top+g.top,99999,d.height);break;case "repeat-y":F(c,d,g,b,b.left+g.left,b.top,d.width,99999);break;case "no-repeat":F(c,d,g,b,b.left+g.left,b.top+g.top,d.width,d.height);break;default:E(c,d,g,{top:b.top,left:b.left,width:d.width,height:d.height})}}function G(d,
-e,h){var v,E,s,F,n,p,r,G,l=j.Util.Bounds(d),C,B=ba.test(d.nodeName)?"#efefef":u(d,"backgroundColor"),L;L=!e?a():l.width;var k=!e?f():l.height,O=[];L={storage:O,width:L,height:k,clip:function(){O.push({type:"function",name:"clip",arguments:arguments})},translate:function(){O.push({type:"function",name:"translate",arguments:arguments})},fill:function(){O.push({type:"function",name:"fill",arguments:arguments})},save:function(){O.push({type:"function",name:"save",arguments:arguments})},restore:function(){O.push({type:"function",
-name:"restore",arguments:arguments})},fillRect:function(){O.push({type:"function",name:"fillRect",arguments:arguments})},createPattern:function(){O.push({type:"function",name:"createPattern",arguments:arguments})},drawShape:function(){var a=[];O.push({type:"function",name:"drawShape",arguments:a});return{moveTo:function(){a.push({name:"moveTo",arguments:arguments})},lineTo:function(){a.push({name:"lineTo",arguments:arguments})},arcTo:function(){a.push({name:"arcTo",arguments:arguments})},bezierCurveTo:function(){a.push({name:"bezierCurveTo",
-arguments:arguments})},quadraticCurveTo:function(){a.push({name:"quadraticCurveTo",arguments:arguments})}}},drawImage:function(){O.push({type:"function",name:"drawImage",arguments:arguments})},fillText:function(){O.push({type:"function",name:"fillText",arguments:arguments})},setVariable:function(a,b){O.push({type:"variable",name:a,arguments:b})}};v=u(d,"zIndex");(k=e?e.zIndex:null)?"auto"!==v&&(v={zindex:v,children:[]},k.children.push(v),k=v):k=v={zindex:0,children:[]};v=u(d,"opacity")*(e?e.opacity:
-1);L.setVariable("globalAlpha",v);var X=u(d,"position"),K;K=["Top","Right","Bottom","Left"].map(function(a){return{width:b(d,"border"+a+"Width"),color:u(d,"border"+a+"Color")}});e={ctx:L,zIndex:k,opacity:v,cssPosition:X,borders:K,clip:e&&e.clip?j.Util.Extend({},e.clip):null};!0===c.useOverflow&&(!0===/(hidden|scroll|auto)/.test(u(d,"overflow"))&&!1===/(BODY)/i.test(d.nodeName))&&(e.clip=e.clip?t(e.clip,l):l);e.zIndex.children.push(e);var k=e.borders,S=e.ctx;L=e.clip;v={left:l.left+k[3].width,top:l.top+
-k[0].width,width:l.width-(k[1].width+k[3].width),height:l.height-(k[0].width+k[2].width)};L&&(v=t(v,L));L=v;X=l.left;K=l.top;var aa=l.width,M=l.height,V,y,z,H,I,T,q;q=["TopLeft","TopRight","BottomRight","BottomLeft"].map(function(a){return u(d,"border"+a+"Radius")});var U=l.left;G=l.top;p=l.width;r=l.height;E=q[0][0];s=q[0][1];F=q[1][0];n=q[1][1];H=q[2][0];I=q[2][1];V=q[3][0];y=q[3][1];var N=p-F,P=r-H,da=p-I;z=r-y;v=W(U,G,E,s).topLeft.subdivide(0.5);E=W(U+k[3].width,G+k[0].width,Math.max(0,E-k[3].width),
-Math.max(0,s-k[0].width)).topLeft.subdivide(0.5);s=W(U+N,G,F,n).topRight.subdivide(0.5);F=W(U+Math.min(N,p+k[3].width),G+k[0].width,N>p+k[3].width?0:F-k[3].width,n-k[0].width).topRight.subdivide(0.5);n=W(U+da,G+P,I,H).bottomRight.subdivide(0.5);p=W(U+Math.min(da,p+k[3].width),G+Math.min(P,r+k[0].width),Math.max(0,I-k[1].width),Math.max(0,H-k[2].width)).bottomRight.subdivide(0.5);r=W(U,G+z,V,y).bottomLeft.subdivide(0.5);G=W(U+k[3].width,G+z,Math.max(0,V-k[3].width),Math.max(0,y-k[2].width)).bottomLeft.subdivide(0.5);
-P=[];switch(u(d,"backgroundClip")){case "content-box":case "padding-box":D(P,q[0],q[1],E,F,l.left+k[3].width,l.top+k[0].width);D(P,q[1],q[2],F,p,l.left+l.width-k[1].width,l.top+k[0].width);D(P,q[2],q[3],p,G,l.left+l.width-k[1].width,l.top+l.height-k[2].width);D(P,q[3],q[0],G,E,l.left+k[3].width,l.top+l.height-k[2].width);break;default:D(P,q[0],q[1],v,s,l.left,l.top),D(P,q[1],q[2],s,n,l.left+l.width,l.top),D(P,q[2],q[3],n,r,l.left+l.width,l.top+l.height),D(P,q[3],q[0],r,v,l.left,l.top+l.height)}U=
-[];for(V=0;4>V;V++)if(0<k[V].width){y=X;z=K;H=aa;I=M-k[2].width;switch(V){case 0:I=k[0].width;T=Z({c1:[y,z],c2:[y+H,z],c3:[y+H-k[1].width,z+I],c4:[y+k[3].width,z+I]},q[0],q[1],v,E,s,F);break;case 1:y=X+aa-k[1].width;H=k[1].width;T=Z({c1:[y+H,z],c2:[y+H,z+I+k[2].width],c3:[y,z+I],c4:[y,z+k[0].width]},q[1],q[2],s,F,n,p);break;case 2:z=z+M-k[2].width;I=k[2].width;T=Z({c1:[y+H,z+I],c2:[y,z+I],c3:[y+k[3].width,z],c4:[y+H-k[2].width,z]},q[2],q[3],n,p,r,G);break;case 3:H=k[3].width,T=Z({c1:[y,z+I+k[2].width],
-c2:[y,z],c3:[y+H,z+k[0].width],c4:[y+H,z+I]},q[3],q[0],r,G,v,E)}U.push({args:T,color:k[V].color})}ja(S,P);S.save();S.clip();if(0<L.height&&0<L.width){g(S,l.left,l.top,l.width,l.height,B);B=u(d,"backgroundImage");T=j.Util.parseBackgroundImage(B);for(X=T.length;X--;)B=T[X],B.args&&0!==B.args.length&&((v=ca("url"===B.method?B.args[0]:B.value))?ra(d,L,S,v,X):w("html2canvas: Error loading background:",B))}S.restore();U.forEach(function(a){var b=a.args;a=a.color;"transparent"!==a&&(S.setVariable("fillStyle",
-a),ja(S,b),S.fill())});if(!h&&(h=ma(d,":before"),B=ma(d,":after"),h||B))h&&(d.className+=" "+Y+"-before",d.parentNode.insertBefore(h,d),ga(h,e,!0),d.parentNode.removeChild(h),d.className=d.className.replace(Y+"-before","").trim()),B&&(d.className+=" "+Y+"-after",d.appendChild(B),ga(B,e,!0),d.removeChild(B),d.className=d.className.replace(Y+"-after","").trim());switch(d.nodeName){case "IMG":(C=ca(d.getAttribute("src")))?R(S,d,C,l,k):w("html2canvas: Error loading <img>:"+d.getAttribute("src"));break;
-case "INPUT":/^(text|url|email|submit|button|reset)$/.test(d.type)&&0<(d.value||d.placeholder).length&&J(d,l,e);break;case "TEXTAREA":0<(d.value||d.placeholder||"").length&&J(d,l,e);break;case "SELECT":0<(d.options||d.placeholder||"").length&&J(d,l,e);break;case "LI":var Q,l=e.ctx;C=u(d,"listStyleType");if(/^(decimal|decimal-leading-zero|upper-alpha|upper-latin|upper-roman|lower-alpha|lower-greek|lower-latin|lower-roman)$/i.test(C)){h=-1;B=1;T=d.parentNode.childNodes;if(d.parentNode){for(;T[++h]!==
-d;)1===T[h].nodeType&&B++;h=B}else h=-1;switch(C){case "decimal":Q=h;break;case "decimal-leading-zero":Q=1===h.toString().length?"0"+h.toString():h.toString();break;case "upper-roman":Q=j.Generate.ListRoman(h);break;case "lower-roman":Q=j.Generate.ListRoman(h).toLowerCase();break;case "lower-alpha":Q=j.Generate.ListAlpha(h).toLowerCase();break;case "upper-alpha":Q=j.Generate.ListAlpha(h)}Q+=". ";h=x.createElement("boundelement");h.style.display="inline";B=d.style.listStyleType;d.style.listStyleType=
-"none";h.appendChild(x.createTextNode(Q));d.insertBefore(h,d.firstChild);C=j.Util.Bounds(h);d.removeChild(h);d.style.listStyleType=B;m(l,d,"none",u(d,"color"));"inside"===u(d,"listStylePosition")&&(l.setVariable("textAlign","left"),h=L.left,C=C.bottom,null!==Q&&0<j.Util.trimText(Q).length&&l.fillText(Q,h,C))}break;case "CANVAS":R(S,d,d,l,k)}return e}function ga(a,b,c){"none"!==u(a,"display")&&("hidden"!==u(a,"visibility")&&!a.hasAttribute("data-html2canvas-ignore"))&&(b=G(a,b,c)||b,ba.test(a.nodeName)||
-j.Util.Children(a).forEach(function(e){1===e.nodeType?ga(e,b,c):3===e.nodeType&&d(a,e,b)}))}n.scroll(0,0);var aa=c.elements===p?r.body:c.elements[0],x=aa.ownerDocument,K=j.Util.Support(c,x),ba=RegExp("("+c.ignoreElements+")"),fa=x.body,u=j.Util.getCSS,Y="___html2canvas___pseudoelement",ka=x.createElement("style");ka.innerHTML="."+Y+'-before:before { content: "" !important; display: none !important; }.'+Y+'-after:after { content: "" !important; display: none !important; }';fa.appendChild(ka);e=e||
-{};var W,M=4*((Math.sqrt(2)-1)/3);W=function(a,b,d,c){var e=d*M,f=c*M;d=a+d;c=b+c;return{topLeft:s({x:a,y:c},{x:a,y:c-f},{x:d-e,y:b},{x:d,y:b}),topRight:s({x:a,y:b},{x:a+e,y:b},{x:d,y:c-f},{x:d,y:c}),bottomRight:s({x:d,y:b},{x:d,y:b+f},{x:a+e,y:c},{x:a,y:c}),bottomLeft:s({x:d,y:c},{x:d-e,y:c},{x:a,y:b+f},{x:a,y:b})}};var ha=G(aa,null);if(K.svgRendering){var ea=r.documentElement,N=function(a){a=j.Util.Children(a);var b=a.length,d,c,e,f,g;for(g=0;g<b;g+=1)if(f=a[g],3===f.nodeType)C+=f.nodeValue.replace(/</g,
-"&lt;").replace(/>/g,"&gt;");else if(1===f.nodeType&&!/^(script|meta|title)$/.test(f.nodeName.toLowerCase())){C+="<"+f.nodeName.toLowerCase();if(f.hasAttributes()){d=f.attributes;e=d.length;for(c=0;c<e;c+=1)C+=" "+d[c].name+'="'+d[c].value+'"'}C+=">";N(f);C+="</"+f.nodeName.toLowerCase()+">"}},la=new Image,na=a(),oa=f(),C="";N(ea);la.src=["data:image/svg+xml,","<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='"+na+"' height='"+oa+"'>","<foreignObject width='"+na+"' height='"+oa+"'>","<html xmlns='http://www.w3.org/1999/xhtml' style='margin:0;'>",
-C.replace(/\#/g,"%23"),"</html></foreignObject></svg>"].join("");la.onload=function(){ha.svgRender=la}}Array.prototype.slice.call(aa.children,0).forEach(function(a){ga(a,ha)});ha.backgroundColor=u(r.documentElement,"backgroundColor");fa.removeChild(ka);return ha};j.Preload=function(e){function c(){w("html2canvas: start: images: "+d.numLoaded+" / "+d.numTotal+" (failed: "+d.numFailed+")");!d.firstRun&&d.numLoaded>=d.numTotal&&(w("Finished loading images: # "+d.numTotal+" (failed: "+d.numFailed+")"),
-"function"===typeof e.complete&&e.complete(d))}function a(a,b,f){var g,h=e.proxy,j;J.href=a;a=J.href;g="html2canvas_"+s++;f.callbackname=g;h=-1<h.indexOf("?")?h+"&":h+"?";h+="url="+encodeURIComponent(a)+"&callback="+g;j=D.createElement("script");n[g]=function(a){null===a.query.results?(f.succeeded=!1,d.numLoaded++,d.numFailed++,c()):(m(b,f),b.src=a.query.results.url);n[g]=p;try{delete n[g]}catch(e){}j.parentNode.removeChild(j);j=null;delete f.script;delete f.callbackname};j.setAttribute("type","text/javascript");
-j.setAttribute("src",h);f.script=j;n.document.body.appendChild(j)}function f(a,b){var d=n.getComputedStyle(a,b),c=d.content;"url"===c.substr(0,3)&&t.loadImage(j.Util.parseBackgroundImage(c)[0].args[0]);g(d.backgroundImage,a)}function b(a){return a&&a.method&&a.args&&0<a.args.length}function g(a,e){var f;j.Util.parseBackgroundImage(a).filter(b).forEach(function(a){if("url"===a.method)t.loadImage(a.args[0]);else if(a.method.match(/\-?gradient$/)){f===p&&(f=j.Util.Bounds(e));a=a.value;var b=j.Generate.Gradient(a,
-f);b!==p&&(d[a]={img:b,succeeded:!0},d.numTotal++,d.numLoaded++,c())}})}function h(a){var b=!1;try{j.Util.Children(a).forEach(function(a){h(a)})}catch(d){}try{b=a.nodeType}catch(c){b=!1,w("html2canvas: failed to access some element's nodeType - Exception: "+c.message)}if(1===b||b===p){f(a,":before");f(a,":after");try{g(j.Util.getCSS(a,"backgroundImage"),a)}catch(e){w("html2canvas: failed to get background-image - Exception: "+e.message)}g(a)}}function m(b,f){b.onload=function(){f.timer!==p&&n.clearTimeout(f.timer);
-d.numLoaded++;f.succeeded=!0;b.onerror=b.onload=null;c()};b.onerror=function(){if("anonymous"===b.crossOrigin&&(n.clearTimeout(f.timer),e.proxy)){var g=b.src;b=new Image;f.img=b;b.src=g;a(b.src,b,f);return}d.numLoaded++;d.numFailed++;f.succeeded=!1;b.onerror=b.onload=null;c()}}var d={numLoaded:0,numFailed:0,numTotal:0,cleanupDone:!1},ca,t,R,s=0;R=e.elements[0]||r.body;var D=R.ownerDocument,Z=D.images,K=Z.length,J=D.createElement("a"),N;N=(new Image).crossOrigin!==p;var M;J.href=n.location.href;ca=
-J.protocol+J.host;t={loadImage:function(b){var c,f;b&&d[b]===p&&(c=new Image,b.match(/data:image\/.*;base64,/i)?(c.src=b.replace(/url\(['"]{0,}|['"]{0,}\)$/ig,""),f=d[b]={img:c},d.numTotal++,m(c,f)):(J.href=b,J.href=J.href,J.protocol+J.host===ca||!0===e.allowTaint?(f=d[b]={img:c},d.numTotal++,m(c,f),c.src=b):N&&!e.allowTaint&&e.useCORS?(c.crossOrigin="anonymous",f=d[b]={img:c},d.numTotal++,m(c,f),c.src=b,c.customComplete=function(){if(this.img.complete)this.img.onerror();else this.timer=n.setTimeout(this.img.customComplete,
-100)}.bind(f),c.customComplete()):e.proxy&&(f=d[b]={img:c},d.numTotal++,a(b,c,f))))},cleanupDOM:function(a){var b,f;if(!d.cleanupDone){a&&"string"===typeof a?w("html2canvas: Cleanup because: "+a):w("html2canvas: Cleanup after timeout: "+e.timeout+" ms.");for(f in d)if(d.hasOwnProperty(f)&&(b=d[f],"object"===typeof b&&b.callbackname&&b.succeeded===p)){n[b.callbackname]=p;try{delete n[b.callbackname]}catch(g){}b.script&&b.script.parentNode&&(b.script.setAttribute("src","about:blank"),b.script.parentNode.removeChild(b.script));
-d.numLoaded++;d.numFailed++;w("html2canvas: Cleaned up failed img: '"+f+"' Steps: "+d.numLoaded+" / "+d.numTotal)}n.stop!==p?n.stop():r.execCommand!==p&&r.execCommand("Stop",!1);r.close!==p&&r.close();d.cleanupDone=!0;a&&"string"===typeof a||c()}},renderingDone:function(){M&&n.clearTimeout(M)}};0<e.timeout&&(M=n.setTimeout(t.cleanupDOM,e.timeout));w("html2canvas: Preload starts: finding background-images");d.firstRun=!0;h(R);w("html2canvas: Preload: Finding images");for(R=0;R<K;R+=1)t.loadImage(Z[R].getAttribute("src"));
-d.firstRun=!1;w("html2canvas: Preload: Done.");d.numTotal===d.numLoaded&&c();return t};j.Renderer=function(e,c){var a=c.renderer;if("string"===typeof c.renderer&&j.Renderer[a]!==p)a=j.Renderer[a](c);else if("function"===typeof a)a=a(c);else throw Error("Unknown renderer");if("function"!==typeof a)throw Error("Invalid renderer defined");var f=r,b=[],g=function(a){var c=[],d=[];a.children.forEach(function(a){a.children&&0<a.children.length?(c.push(a),d.push(a.zindex)):b.push(a)});d.sort(function(a,
-b){return a-b});d.forEach(function(a){var b;c.some(function(d,c){b=c;return d.zindex===a});g(c.splice(b,1)[0])})};g(e.zIndex);return a(e,c,f,b,j)};j.Util.Support=function(e,c){function a(){var a=new Image,b=c.createElement("canvas"),d=b.getContext===p?!1:b.getContext("2d");if(!1===d)return!1;b.width=b.height=10;a.src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><foreignObject width='10' height='10'><div xmlns='http://www.w3.org/1999/xhtml' style='width:10;height:10;'>sup</div></foreignObject></svg>";
-try{d.drawImage(a,0,0),b.toDataURL()}catch(e){return!1}w("html2canvas: Parse: SVG powered rendering available");return!0}var f,b,g=!1;c.createRange&&(f=c.createRange(),f.getBoundingClientRect&&(b=c.createElement("boundtest"),b.style.height="123px",b.style.display="block",c.body.appendChild(b),f.selectNode(b),f=f.getBoundingClientRect(),f=f.height,123===f&&(g=!0),c.body.removeChild(b)));return{rangeBounds:g,svgRendering:e.svgRendering&&a()}};n.html2canvas=function(e,c){e=e.length?e:[e];var a,f,b={logging:!1,
-elements:e,background:"#fff",proxy:null,timeout:0,useCORS:!1,allowTaint:!1,svgRendering:!1,ignoreElements:"IFRAME|OBJECT|PARAM",useOverflow:!0,letterRendering:!1,chinese:!1,width:null,height:null,taintTest:!0,renderer:"Canvas"},b=j.Util.Extend(c,b);j.logging=b.logging;b.complete=function(c){if(!("function"===typeof b.onpreloaded&&!1===b.onpreloaded(c))&&(a=j.Parse(c,b),!("function"===typeof b.onparsed&&!1===b.onparsed(a))&&(f=j.Renderer(a,b),"function"===typeof b.onrendered)))b.onrendered(f)};n.setTimeout(function(){j.Preload(b)},
-0);return{render:function(a,c){return j.Renderer(a,j.Util.Extend(c,b))},parse:function(a,c){return j.Parse(a,j.Util.Extend(c,b))},preload:function(a){return j.Preload(j.Util.Extend(a,b))},log:w}};n.html2canvas.log=w;n.html2canvas.Renderer={Canvas:p};j.Renderer.Canvas=function(e){function c(c,d){switch(d.type){case "variable":c[d.name]=d.arguments;break;case "function":if("createPattern"===d.name){if(0<d.arguments[0].width&&0<d.arguments[0].height)try{c.fillStyle=c.createPattern(d.arguments[0],"repeat")}catch(h){w("html2canvas: Renderer: Error creating pattern",
-h.message)}}else if("drawShape"===d.name){var j=d.arguments;c.beginPath();j.forEach(function(a){c[a.name].apply(c,a.arguments)});c.closePath()}else if("drawImage"===d.name){if(0<d.arguments[8]&&0<d.arguments[7]){if(!(j=!e.taintTest))if(j=e.taintTest)a:{if(-1===f.indexOf(d.arguments[0].src)){g.drawImage(d.arguments[0],0,0);try{g.getImageData(0,0,1,1)}catch(n){b=a.createElement("canvas");g=b.getContext("2d");j=!1;break a}f.push(d.arguments[0].src)}j=!0}j&&c.drawImage.apply(c,d.arguments)}}else c[d.name].apply(c,
-d.arguments)}}e=e||{};var a=r,f=[],b=r.createElement("canvas"),g=b.getContext("2d"),h=e.canvas||a.createElement("canvas");return function(a,b,e,f,g){var j=h.getContext("2d"),n,r;h.width=h.style.width=b.width||a.ctx.width;h.height=h.style.height=b.height||a.ctx.height;n=j.fillStyle;j.fillStyle=("transparent"===a.backgroundColor||"rgba(0, 0, 0, 0)"===a.backgroundColor)&&b.background!==p?b.background:a.backgroundColor;j.fillRect(0,0,h.width,h.height);j.fillStyle=n;if(b.svgRendering&&a.svgRender!==p)j.drawImage(a.svgRender,
-0,0);else{n=0;for(r=f.length;n<r;n+=1)a=f.splice(0,1)[0],a.canvasPosition=a.canvasPosition||{},j.textBaseline="bottom",a.clip&&(j.save(),j.beginPath(),j.rect(a.clip.left,a.clip.top,a.clip.width,a.clip.height),j.clip()),a.ctx.storage&&a.ctx.storage.forEach(c.bind(null,j)),a.clip&&j.restore()}w("html2canvas: Renderer: Canvas renderer done - returning canvas obj");r=b.elements.length;return 1===r&&"object"===typeof b.elements[0]&&"BODY"!==b.elements[0].nodeName?(b=g.Util.Bounds(b.elements[0]),e=e.createElement("canvas"),
-e.width=b.width,e.height=b.height,j=e.getContext("2d"),j.drawImage(h,b.left,b.top,b.width,b.height,0,0,b.width,b.height),h=null,e):h}}})(window,document);
+// JS Package: chausset.js
 
-(function (html2canvas) {
-	var cropCanvas = function (sourceCanvas, x1, x2, y1, y2) {
-	    var width = x2 - x1, height = y2 - y1;
 
-		var canvas = document.createElement("canvas");
-	    canvas.width = width;
-	    canvas.height = height;
-	    var context = canvas.getContext('2d');
-	    context.drawImage(sourceCanvas, x1, y1, width, height, 0, 0, width, height);
-	    return canvas;
-	};
+// JS File: lib/html2canvas.js
+/*
+  html2canvas 0.4.0 <http://html2canvas.hertzen.com>
+  Copyright (c) 2013 Niklas von Hertzen (@niklasvh)
 
-	var _canvas = null, _overlay = null, _isCropping = false, _selectionRectangle = null, _cropData = null;
+  Released under MIT License
+*/
 
-	var createOverlay = function (canvas) {
-		var overlay = document.createElement("div");
-		overlay.style.cssText = [
-			"position:fixed",
-			"height:100%","width:100%",
-			"top:0", "left:0",
-			"z-index:100000"
-		].join(";");
-		overlay.onmousedown = startCropping;
-		overlay.onmouseup = stopCropping;
-		overlay.onmousemove = onOverlayMouseMove
-		overlay.appendChild(canvas);
-		document.body.appendChild(overlay);
-		return overlay;
-	};
+(function(window, document, undefined){
 
-	var createSelectionRectangle = function () {
-		var selectionRectangle = document.createElement("div");
-		selectionRectangle.style.cssText = [
-			"position:fixed",
-			"border : 2px dotted red",
-			"z-index:100005"
-		].join(";");
-		selectionRectangle.onmousemove = onOverlayMouseMove;
-		selectionRectangle.onmouseup = stopCropping;
-		document.body.appendChild(selectionRectangle);
-		return selectionRectangle;
-	};
+"use strict";
 
-	var initializeCropData = function (event) {
-		var x = event.clientX, y = event.clientY;
-		_cropData = {};
-		_cropData.x1 = _cropData.x2 = x, _cropData.y1 = _cropData.y2 = y;
-	}
+var _html2canvas = {},
+previousElement,
+computedCSS,
+html2canvas;
 
-	var updateCropData = function (event) {
-		var x = event.clientX, y = event.clientY;
-		_cropData.x2 = x, _cropData.y2 = y;
-	};
+function h2clog(a) {
+  if (_html2canvas.logging && window.console && window.console.log) {
+    window.console.log(a);
+  }
+}
 
-	var updateSelectionFromCropData = function (selection, cropData) {
-		var fixedData = fixRectData(cropData);
-		_selectionRectangle.style.top = fixedData.y1 + "px";
-		_selectionRectangle.style.left = fixedData.x1 + "px";
-		_selectionRectangle.style.height = fixedData.y2 - fixedData.y1 + "px";
-		_selectionRectangle.style.width = fixedData.x2 - fixedData.x1 + "px";
-	};
+_html2canvas.Util = {};
 
-	var fixRectData = function (rectData) {
-		var fixedData = {
-			x1 : Math.min(rectData.x1, rectData.x2),
-			x2 : Math.max(rectData.x1, rectData.x2),
-			y1 : Math.min(rectData.y1, rectData.y2),
-			y2 : Math.max(rectData.y1, rectData.y2),
-		};
-		return fixedData;
-	};
+_html2canvas.Util.trimText = (function(isNative){
+  return function(input){
+    if(isNative) { return isNative.apply( input ); }
+    else { return ((input || '') + '').replace( /^\s+|\s+$/g , '' ); }
+  };
+})( String.prototype.trim );
 
-	var startCropping = function (event) {
-		_isCropping = true;
-		_selectionRectangle = createSelectionRectangle();
-		initializeCropData(event);
-		updateSelectionFromCropData(_selectionRectangle, _cropData);
-		console.log("startCropping");
-	};
+_html2canvas.Util.parseBackgroundImage = function (value) {
+    var whitespace = ' \r\n\t',
+        method, definition, prefix, prefix_i, block, results = [],
+        c, mode = 0, numParen = 0, quote, args;
 
-	var onOverlayMouseMove = function (event) {
-		if(_isCropping) {
-			updateCropData(event);
-			updateSelectionFromCropData (_selectionRectangle, _cropData);
-		}
-	};
+    var appendResult = function(){
+        if(method) {
+            if(definition.substr( 0, 1 ) === '"') {
+                definition = definition.substr( 1, definition.length - 2 );
+            }
+            if(definition) {
+                args.push(definition);
+            }
+            if(method.substr( 0, 1 ) === '-' &&
+                    (prefix_i = method.indexOf( '-', 1 ) + 1) > 0) {
+                prefix = method.substr( 0, prefix_i);
+                method = method.substr( prefix_i );
+            }
+            results.push({
+                prefix: prefix,
+                method: method.toLowerCase(),
+                value: block,
+                args: args
+            });
+        }
+        args = []; //for some odd reason, setting .length = 0 didn't work in safari
+        method =
+            prefix =
+            definition =
+            block = '';
+    };
 
-	var stopCropping = function (event) {
-		if(_isCropping) {
-			_isCropping = false;
-			var fixedData = fixRectData(_cropData);
-			canvas = cropCanvas(_canvas, fixedData.x1, fixedData.x2 ,fixedData.y1, fixedData.y2);
-			renderedImage = canvas.toDataURL("image/png");
-			saveImage(renderedImage);
-		}
-	};
-	var SERVICE_URL = "http://screenletstore.appspot.com/";
+    appendResult();
+    for(var i = 0, ii = value.length; i<ii; i++) {
+        c = value[i];
+        if(mode === 0 && whitespace.indexOf( c ) > -1){
+            continue;
+        }
+        switch(c) {
+            case '"':
+                if(!quote) {
+                    quote = c;
+                }
+                else if(quote === c) {
+                    quote = null;
+                }
+                break;
 
-	var saveImage = function (renderedImage) {
-		var imageData = renderedImage.replace("data:image/png;base64,", "");
-		var xhr = new XMLHttpRequest();
-		var formData = new FormData();
+            case '(':
+                if(quote) { break; }
+                else if(mode === 0) {
+                    mode = 1;
+                    block += c;
+                    continue;
+                } else {
+                    numParen++;
+                }
+                break;
 
-		formData.append('data', imageData);
-		xhr.open('POST', SERVICE_URL + "__/upload", true);
-		xhr.onload = function(e) {
-			window.open(SERVICE_URL + "img/" + this.responseText);
-			_overlay.parentNode.removeChild(_overlay);
-			_selectionRectangle.parentNode.removeChild(_selectionRectangle);
-		};
+            case ')':
+                if(quote) { break; }
+                else if(mode === 1) {
+                    if(numParen === 0) {
+                        mode = 0;
+                        block += c;
+                        appendResult();
+                        continue;
+                    } else {
+                        numParen--;
+                    }
+                }
+                break;
 
-		xhr.send(formData);
-	};
+            case ',':
+                if(quote) { break; }
+                else if(mode === 0) {
+                    appendResult();
+                    continue;
+                }
+                else if (mode === 1) {
+                    if(numParen === 0 && !method.match(/^url$/i)) {
+                        args.push(definition);
+                        definition = '';
+                        block += c;
+                        continue;
+                    }
+                }
+                break;
+        }
 
-	var onload = function () {
-		// remove loader
-		var loader = document.getElementById("chausset-loader");
-		loader.style.opacity = 0;	
+        block += c;
+        if(mode === 0) { method += c; }
+        else { definition += c; }
+    }
+    appendResult();
 
-		var proxyURL = "query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.uri%20where%20url%3D%40url&format=json",
-			protocol = "http://";
-		if (window.location.href.indexOf("https") == 0) {
-			protocol = "https://";
-		}
-		// take screenshot
-		html2canvas(
-			document.body, 
-			{	
-				proxy : protocol + proxyURL,
-				onrendered : function (canvas) {
-					_canvas = canvas;
-					_overlay = createOverlay(canvas);	
-					loader.style.opacity = 1;
-					loader.innerHTML = "Screenshot ready, select the area to crop";
-					window.setTimeout(function () {
-						loader.style.opacity = 0;	
-					} ,2000);
-					window.setTimeout(function () {
-						loader.parentNode.removeChild(loader);		
-					} ,2500);
+    return results;
+};
 
-				}
-			}
-		);
-	};
+_html2canvas.Util.Bounds = function getBounds (el) {
+  var clientRect,
+  bounds = {};
 
-	onload();
+  if (el.getBoundingClientRect){
+    clientRect = el.getBoundingClientRect();
+
+
+    // TODO add scroll position to bounds, so no scrolling of window necessary
+    bounds.top = clientRect.top;
+    bounds.bottom = clientRect.bottom || (clientRect.top + clientRect.height);
+    bounds.left = clientRect.left;
+
+    // older IE doesn't have width/height, but top/bottom instead
+    bounds.width = clientRect.width || (clientRect.right - clientRect.left);
+    bounds.height = clientRect.height || (clientRect.bottom - clientRect.top);
+
+    return bounds;
+
+  }
+};
+
+_html2canvas.Util.getCSS = function (el, attribute, index) {
+  // return $(el).css(attribute);
+
+    var val,
+    isBackgroundSizePosition = attribute.match( /^background(Size|Position)$/ );
+
+  function toPX( attribute, val ) {
+    var rsLeft = el.runtimeStyle && el.runtimeStyle[ attribute ],
+    left,
+    style = el.style;
+
+    // Check if we are not dealing with pixels, (Opera has issues with this)
+    // Ported from jQuery css.js
+    // From the awesome hack by Dean Edwards
+    // http://erik.eae.net/archives/2007/07/27/18.54.15/#comment-102291
+
+    // If we're not dealing with a regular pixel number
+    // but a number that has a weird ending, we need to convert it to pixels
+
+    if ( !/^-?[0-9]+\.?[0-9]*(?:px)?$/i.test( val ) && /^-?\d/.test( val ) ) {
+
+      // Remember the original values
+      left = style.left;
+
+      // Put in the new values to get a computed value out
+      if ( rsLeft ) {
+        el.runtimeStyle.left = el.currentStyle.left;
+      }
+      style.left = attribute === "fontSize" ? "1em" : (val || 0);
+      val = style.pixelLeft + "px";
+
+      // Revert the changed values
+      style.left = left;
+      if ( rsLeft ) {
+        el.runtimeStyle.left = rsLeft;
+      }
+
+    }
+
+    if (!/^(thin|medium|thick)$/i.test( val )) {
+      return Math.round(parseFloat( val )) + "px";
+    }
+
+    return val;
+  }
+
+    if (previousElement !== el) {
+      computedCSS = document.defaultView.getComputedStyle(el, null);
+    }
+    val = computedCSS[attribute];
+
+    if (isBackgroundSizePosition) {
+      val = (val || '').split( ',' );
+      val = val[index || 0] || val[0] || 'auto';
+      val = _html2canvas.Util.trimText(val).split(' ');
+
+      if(attribute === 'backgroundSize' && (!val[ 0 ] || val[ 0 ].match( /cover|contain|auto/ ))) {
+        //these values will be handled in the parent function
+
+      } else {
+        val[ 0 ] = ( val[ 0 ].indexOf( "%" ) === -1 ) ? toPX(  attribute + "X", val[ 0 ] ) : val[ 0 ];
+        if(val[ 1 ] === undefined) {
+          if(attribute === 'backgroundSize') {
+            val[ 1 ] = 'auto';
+            return val;
+          }
+          else {
+            // IE 9 doesn't return double digit always
+            val[ 1 ] = val[ 0 ];
+          }
+        }
+        val[ 1 ] = ( val[ 1 ].indexOf( "%" ) === -1 ) ? toPX(  attribute + "Y", val[ 1 ] ) : val[ 1 ];
+      }
+    } else if ( /border(Top|Bottom)(Left|Right)Radius/.test( attribute) ) {
+      var arr = val.split(" ");
+      if ( arr.length <= 1 ) {
+              arr[ 1 ] = arr[ 0 ];
+      }
+      arr[ 0 ] = parseInt( arr[ 0 ], 10 );
+      arr[ 1 ] = parseInt( arr[ 1 ], 10 );
+      val = arr;
+    }
+
+  return val;
+};
+
+_html2canvas.Util.resizeBounds = function( current_width, current_height, target_width, target_height, stretch_mode ){
+  var target_ratio = target_width / target_height,
+    current_ratio = current_width / current_height,
+    output_width, output_height;
+
+  if(!stretch_mode || stretch_mode === 'auto') {
+    output_width = target_width;
+    output_height = target_height;
+
+  } else {
+    if(target_ratio < current_ratio ^ stretch_mode === 'contain') {
+      output_height = target_height;
+      output_width = target_height * current_ratio;
+    } else {
+      output_width = target_width;
+      output_height = target_width / current_ratio;
+    }
+  }
+
+  return { width: output_width, height: output_height };
+};
+
+function backgroundBoundsFactory( prop, el, bounds, image, imageIndex, backgroundSize ) {
+    var bgposition =  _html2canvas.Util.getCSS( el, prop, imageIndex ) ,
+    topPos,
+    left,
+    percentage,
+    val;
+
+    if (bgposition.length === 1){
+      val = bgposition[0];
+
+      bgposition = [];
+
+      bgposition[0] = val;
+      bgposition[1] = val;
+    }
+
+    if (bgposition[0].toString().indexOf("%") !== -1){
+      percentage = (parseFloat(bgposition[0])/100);
+      left = bounds.width * percentage;
+      if(prop !== 'backgroundSize') {
+        left -= (backgroundSize || image).width*percentage;
+      }
+
+    } else {
+      if(prop === 'backgroundSize') {
+        if(bgposition[0] === 'auto') {
+          left = image.width;
+
+        } else {
+          if(bgposition[0].match(/contain|cover/)) {
+            var resized = _html2canvas.Util.resizeBounds( image.width, image.height, bounds.width, bounds.height, bgposition[0] );
+            left = resized.width;
+            topPos = resized.height;
+          } else {
+            left = parseInt (bgposition[0], 10 );
+          }
+        }
+
+      } else {
+        left = parseInt( bgposition[0], 10 );
+      }
+    }
+
+
+    if(bgposition[1] === 'auto') {
+      topPos = left / image.width * image.height;
+    } else if (bgposition[1].toString().indexOf("%") !== -1){
+      percentage = (parseFloat(bgposition[1])/100);
+      topPos =  bounds.height * percentage;
+      if(prop !== 'backgroundSize') {
+        topPos -= (backgroundSize || image).height * percentage;
+      }
+
+    } else {
+      topPos = parseInt(bgposition[1],10);
+    }
+
+    return [left, topPos];
+}
+
+_html2canvas.Util.BackgroundPosition = function( el, bounds, image, imageIndex, backgroundSize ) {
+    var result = backgroundBoundsFactory( 'backgroundPosition', el, bounds, image, imageIndex, backgroundSize );
+    return { left: result[0], top: result[1] };
+};
+_html2canvas.Util.BackgroundSize = function( el, bounds, image, imageIndex ) {
+    var result = backgroundBoundsFactory( 'backgroundSize', el, bounds, image, imageIndex );
+    return { width: result[0], height: result[1] };
+};
+
+_html2canvas.Util.Extend = function (options, defaults) {
+  for (var key in options) {
+    if (options.hasOwnProperty(key)) {
+      defaults[key] = options[key];
+    }
+  }
+  return defaults;
+};
+
+
+/*
+ * Derived from jQuery.contents()
+ * Copyright 2010, John Resig
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ */
+_html2canvas.Util.Children = function( elem ) {
+
+
+  var children;
+  try {
+
+    children = (elem.nodeName && elem.nodeName.toUpperCase() === "IFRAME") ?
+    elem.contentDocument || elem.contentWindow.document : (function( array ){
+      var ret = [];
+
+      if ( array !== null ) {
+
+        (function( first, second ) {
+          var i = first.length,
+          j = 0;
+
+          if ( typeof second.length === "number" ) {
+            for ( var l = second.length; j < l; j++ ) {
+              first[ i++ ] = second[ j ];
+            }
+
+          } else {
+            while ( second[j] !== undefined ) {
+              first[ i++ ] = second[ j++ ];
+            }
+          }
+
+          first.length = i;
+
+          return first;
+        })( ret, array );
+
+      }
+
+      return ret;
+    })( elem.childNodes );
+
+  } catch (ex) {
+    h2clog("html2canvas.Util.Children failed with exception: " + ex.message);
+    children = [];
+  }
+  return children;
+};
+
+_html2canvas.Util.Font = (function () {
+
+  var fontData = {};
+
+  return function(font, fontSize, doc) {
+    if (fontData[font + "-" + fontSize] !== undefined) {
+      return fontData[font + "-" + fontSize];
+    }
+
+    var container = doc.createElement('div'),
+    img = doc.createElement('img'),
+    span = doc.createElement('span'),
+    sampleText = 'Hidden Text',
+    baseline,
+    middle,
+    metricsObj;
+
+    container.style.visibility = "hidden";
+    container.style.fontFamily = font;
+    container.style.fontSize = fontSize;
+    container.style.margin = 0;
+    container.style.padding = 0;
+
+    doc.body.appendChild(container);
+
+    // http://probablyprogramming.com/2009/03/15/the-tiniest-gif-ever (handtinywhite.gif)
+    img.src = "data:image/gif;base64,R0lGODlhAQABAIABAP///wAAACwAAAAAAQABAAACAkQBADs=";
+    img.width = 1;
+    img.height = 1;
+
+    img.style.margin = 0;
+    img.style.padding = 0;
+    img.style.verticalAlign = "baseline";
+
+    span.style.fontFamily = font;
+    span.style.fontSize = fontSize;
+    span.style.margin = 0;
+    span.style.padding = 0;
+
+    span.appendChild(doc.createTextNode(sampleText));
+    container.appendChild(span);
+    container.appendChild(img);
+    baseline = (img.offsetTop - span.offsetTop) + 1;
+
+    container.removeChild(span);
+    container.appendChild(doc.createTextNode(sampleText));
+
+    container.style.lineHeight = "normal";
+    img.style.verticalAlign = "super";
+
+    middle = (img.offsetTop-container.offsetTop) + 1;
+    metricsObj = {
+      baseline: baseline,
+      lineWidth: 1,
+      middle: middle
+    };
+
+    fontData[font + "-" + fontSize] = metricsObj;
+
+    doc.body.removeChild(container);
+
+    return metricsObj;
+  };
+})();
+
+(function(){
+
+  _html2canvas.Generate = {};
+
+  var reGradients = [
+  /^(-webkit-linear-gradient)\(([a-z\s]+)([\w\d\.\s,%\(\)]+)\)$/,
+  /^(-o-linear-gradient)\(([a-z\s]+)([\w\d\.\s,%\(\)]+)\)$/,
+  /^(-webkit-gradient)\((linear|radial),\s((?:\d{1,3}%?)\s(?:\d{1,3}%?),\s(?:\d{1,3}%?)\s(?:\d{1,3}%?))([\w\d\.\s,%\(\)\-]+)\)$/,
+  /^(-moz-linear-gradient)\(((?:\d{1,3}%?)\s(?:\d{1,3}%?))([\w\d\.\s,%\(\)]+)\)$/,
+  /^(-webkit-radial-gradient)\(((?:\d{1,3}%?)\s(?:\d{1,3}%?)),\s(\w+)\s([a-z\-]+)([\w\d\.\s,%\(\)]+)\)$/,
+  /^(-moz-radial-gradient)\(((?:\d{1,3}%?)\s(?:\d{1,3}%?)),\s(\w+)\s?([a-z\-]*)([\w\d\.\s,%\(\)]+)\)$/,
+  /^(-o-radial-gradient)\(((?:\d{1,3}%?)\s(?:\d{1,3}%?)),\s(\w+)\s([a-z\-]+)([\w\d\.\s,%\(\)]+)\)$/
+  ];
+
+  /*
+ * TODO: Add IE10 vendor prefix (-ms) support
+ * TODO: Add W3C gradient (linear-gradient) support
+ * TODO: Add old Webkit -webkit-gradient(radial, ...) support
+ * TODO: Maybe some RegExp optimizations are possible ;o)
+ */
+  _html2canvas.Generate.parseGradient = function(css, bounds) {
+    var gradient, i, len = reGradients.length, m1, stop, m2, m2Len, step, m3, tl,tr,br,bl;
+
+    for(i = 0; i < len; i+=1){
+      m1 = css.match(reGradients[i]);
+      if(m1) {
+        break;
+      }
+    }
+
+    if(m1) {
+      switch(m1[1]) {
+        case '-webkit-linear-gradient':
+        case '-o-linear-gradient':
+
+          gradient = {
+            type: 'linear',
+            x0: null,
+            y0: null,
+            x1: null,
+            y1: null,
+            colorStops: []
+          };
+
+          // get coordinates
+          m2 = m1[2].match(/\w+/g);
+          if(m2){
+            m2Len = m2.length;
+            for(i = 0; i < m2Len; i+=1){
+              switch(m2[i]) {
+                case 'top':
+                  gradient.y0 = 0;
+                  gradient.y1 = bounds.height;
+                  break;
+
+                case 'right':
+                  gradient.x0 = bounds.width;
+                  gradient.x1 = 0;
+                  break;
+
+                case 'bottom':
+                  gradient.y0 = bounds.height;
+                  gradient.y1 = 0;
+                  break;
+
+                case 'left':
+                  gradient.x0 = 0;
+                  gradient.x1 = bounds.width;
+                  break;
+              }
+            }
+          }
+          if(gradient.x0 === null && gradient.x1 === null){ // center
+            gradient.x0 = gradient.x1 = bounds.width / 2;
+          }
+          if(gradient.y0 === null && gradient.y1 === null){ // center
+            gradient.y0 = gradient.y1 = bounds.height / 2;
+          }
+
+          // get colors and stops
+          m2 = m1[3].match(/((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\)(?:\s\d{1,3}(?:%|px))?)+/g);
+          if(m2){
+            m2Len = m2.length;
+            step = 1 / Math.max(m2Len - 1, 1);
+            for(i = 0; i < m2Len; i+=1){
+              m3 = m2[i].match(/((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\))\s*(\d{1,3})?(%|px)?/);
+              if(m3[2]){
+                stop = parseFloat(m3[2]);
+                if(m3[3] === '%'){
+                  stop /= 100;
+                } else { // px - stupid opera
+                  stop /= bounds.width;
+                }
+              } else {
+                stop = i * step;
+              }
+              gradient.colorStops.push({
+                color: m3[1],
+                stop: stop
+              });
+            }
+          }
+          break;
+
+        case '-webkit-gradient':
+
+          gradient = {
+            type: m1[2] === 'radial' ? 'circle' : m1[2], // TODO: Add radial gradient support for older mozilla definitions
+            x0: 0,
+            y0: 0,
+            x1: 0,
+            y1: 0,
+            colorStops: []
+          };
+
+          // get coordinates
+          m2 = m1[3].match(/(\d{1,3})%?\s(\d{1,3})%?,\s(\d{1,3})%?\s(\d{1,3})%?/);
+          if(m2){
+            gradient.x0 = (m2[1] * bounds.width) / 100;
+            gradient.y0 = (m2[2] * bounds.height) / 100;
+            gradient.x1 = (m2[3] * bounds.width) / 100;
+            gradient.y1 = (m2[4] * bounds.height) / 100;
+          }
+
+          // get colors and stops
+          m2 = m1[4].match(/((?:from|to|color-stop)\((?:[0-9\.]+,\s)?(?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\)\))+/g);
+          if(m2){
+            m2Len = m2.length;
+            for(i = 0; i < m2Len; i+=1){
+              m3 = m2[i].match(/(from|to|color-stop)\(([0-9\.]+)?(?:,\s)?((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\))\)/);
+              stop = parseFloat(m3[2]);
+              if(m3[1] === 'from') {
+                stop = 0.0;
+              }
+              if(m3[1] === 'to') {
+                stop = 1.0;
+              }
+              gradient.colorStops.push({
+                color: m3[3],
+                stop: stop
+              });
+            }
+          }
+          break;
+
+        case '-moz-linear-gradient':
+
+          gradient = {
+            type: 'linear',
+            x0: 0,
+            y0: 0,
+            x1: 0,
+            y1: 0,
+            colorStops: []
+          };
+
+          // get coordinates
+          m2 = m1[2].match(/(\d{1,3})%?\s(\d{1,3})%?/);
+
+          // m2[1] == 0%   -> left
+          // m2[1] == 50%  -> center
+          // m2[1] == 100% -> right
+
+          // m2[2] == 0%   -> top
+          // m2[2] == 50%  -> center
+          // m2[2] == 100% -> bottom
+
+          if(m2){
+            gradient.x0 = (m2[1] * bounds.width) / 100;
+            gradient.y0 = (m2[2] * bounds.height) / 100;
+            gradient.x1 = bounds.width - gradient.x0;
+            gradient.y1 = bounds.height - gradient.y0;
+          }
+
+          // get colors and stops
+          m2 = m1[3].match(/((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\)(?:\s\d{1,3}%)?)+/g);
+          if(m2){
+            m2Len = m2.length;
+            step = 1 / Math.max(m2Len - 1, 1);
+            for(i = 0; i < m2Len; i+=1){
+              m3 = m2[i].match(/((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\))\s*(\d{1,3})?(%)?/);
+              if(m3[2]){
+                stop = parseFloat(m3[2]);
+                if(m3[3]){ // percentage
+                  stop /= 100;
+                }
+              } else {
+                stop = i * step;
+              }
+              gradient.colorStops.push({
+                color: m3[1],
+                stop: stop
+              });
+            }
+          }
+          break;
+
+        case '-webkit-radial-gradient':
+        case '-moz-radial-gradient':
+        case '-o-radial-gradient':
+
+          gradient = {
+            type: 'circle',
+            x0: 0,
+            y0: 0,
+            x1: bounds.width,
+            y1: bounds.height,
+            cx: 0,
+            cy: 0,
+            rx: 0,
+            ry: 0,
+            colorStops: []
+          };
+
+          // center
+          m2 = m1[2].match(/(\d{1,3})%?\s(\d{1,3})%?/);
+          if(m2){
+            gradient.cx = (m2[1] * bounds.width) / 100;
+            gradient.cy = (m2[2] * bounds.height) / 100;
+          }
+
+          // size
+          m2 = m1[3].match(/\w+/);
+          m3 = m1[4].match(/[a-z\-]*/);
+          if(m2 && m3){
+            switch(m3[0]){
+              case 'farthest-corner':
+              case 'cover': // is equivalent to farthest-corner
+              case '': // mozilla removes "cover" from definition :(
+                tl = Math.sqrt(Math.pow(gradient.cx, 2) + Math.pow(gradient.cy, 2));
+                tr = Math.sqrt(Math.pow(gradient.cx, 2) + Math.pow(gradient.y1 - gradient.cy, 2));
+                br = Math.sqrt(Math.pow(gradient.x1 - gradient.cx, 2) + Math.pow(gradient.y1 - gradient.cy, 2));
+                bl = Math.sqrt(Math.pow(gradient.x1 - gradient.cx, 2) + Math.pow(gradient.cy, 2));
+                gradient.rx = gradient.ry = Math.max(tl, tr, br, bl);
+                break;
+              case 'closest-corner':
+                tl = Math.sqrt(Math.pow(gradient.cx, 2) + Math.pow(gradient.cy, 2));
+                tr = Math.sqrt(Math.pow(gradient.cx, 2) + Math.pow(gradient.y1 - gradient.cy, 2));
+                br = Math.sqrt(Math.pow(gradient.x1 - gradient.cx, 2) + Math.pow(gradient.y1 - gradient.cy, 2));
+                bl = Math.sqrt(Math.pow(gradient.x1 - gradient.cx, 2) + Math.pow(gradient.cy, 2));
+                gradient.rx = gradient.ry = Math.min(tl, tr, br, bl);
+                break;
+              case 'farthest-side':
+                if(m2[0] === 'circle'){
+                  gradient.rx = gradient.ry = Math.max(
+                    gradient.cx,
+                    gradient.cy,
+                    gradient.x1 - gradient.cx,
+                    gradient.y1 - gradient.cy
+                    );
+                } else { // ellipse
+
+                  gradient.type = m2[0];
+
+                  gradient.rx = Math.max(
+                    gradient.cx,
+                    gradient.x1 - gradient.cx
+                    );
+                  gradient.ry = Math.max(
+                    gradient.cy,
+                    gradient.y1 - gradient.cy
+                    );
+                }
+                break;
+              case 'closest-side':
+              case 'contain': // is equivalent to closest-side
+                if(m2[0] === 'circle'){
+                  gradient.rx = gradient.ry = Math.min(
+                    gradient.cx,
+                    gradient.cy,
+                    gradient.x1 - gradient.cx,
+                    gradient.y1 - gradient.cy
+                    );
+                } else { // ellipse
+
+                  gradient.type = m2[0];
+
+                  gradient.rx = Math.min(
+                    gradient.cx,
+                    gradient.x1 - gradient.cx
+                    );
+                  gradient.ry = Math.min(
+                    gradient.cy,
+                    gradient.y1 - gradient.cy
+                    );
+                }
+                break;
+
+            // TODO: add support for "30px 40px" sizes (webkit only)
+            }
+          }
+
+          // color stops
+          m2 = m1[5].match(/((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\)(?:\s\d{1,3}(?:%|px))?)+/g);
+          if(m2){
+            m2Len = m2.length;
+            step = 1 / Math.max(m2Len - 1, 1);
+            for(i = 0; i < m2Len; i+=1){
+              m3 = m2[i].match(/((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\))\s*(\d{1,3})?(%|px)?/);
+              if(m3[2]){
+                stop = parseFloat(m3[2]);
+                if(m3[3] === '%'){
+                  stop /= 100;
+                } else { // px - stupid opera
+                  stop /= bounds.width;
+                }
+              } else {
+                stop = i * step;
+              }
+              gradient.colorStops.push({
+                color: m3[1],
+                stop: stop
+              });
+            }
+          }
+          break;
+      }
+    }
+
+    return gradient;
+  };
+
+  _html2canvas.Generate.Gradient = function(src, bounds) {
+    if(bounds.width === 0 || bounds.height === 0) {
+      return;
+    }
+
+    var canvas = document.createElement('canvas'),
+    ctx = canvas.getContext('2d'),
+    gradient, grad, i, len;
+
+    canvas.width = bounds.width;
+    canvas.height = bounds.height;
+
+    // TODO: add support for multi defined background gradients
+    gradient = _html2canvas.Generate.parseGradient(src, bounds);
+
+    if(gradient) {
+      if(gradient.type === 'linear') {
+        grad = ctx.createLinearGradient(gradient.x0, gradient.y0, gradient.x1, gradient.y1);
+
+        for (i = 0, len = gradient.colorStops.length; i < len; i+=1) {
+          try {
+            grad.addColorStop(gradient.colorStops[i].stop, gradient.colorStops[i].color);
+          }
+          catch(e) {
+            h2clog(['failed to add color stop: ', e, '; tried to add: ', gradient.colorStops[i], '; stop: ', i, '; in: ', src]);
+          }
+        }
+
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, bounds.width, bounds.height);
+
+      } else if(gradient.type === 'circle') {
+
+        grad = ctx.createRadialGradient(gradient.cx, gradient.cy, 0, gradient.cx, gradient.cy, gradient.rx);
+
+        for (i = 0, len = gradient.colorStops.length; i < len; i+=1) {
+          try {
+            grad.addColorStop(gradient.colorStops[i].stop, gradient.colorStops[i].color);
+          }
+          catch(e) {
+            h2clog(['failed to add color stop: ', e, '; tried to add: ', gradient.colorStops[i], '; stop: ', i, '; in: ', src]);
+          }
+        }
+
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, bounds.width, bounds.height);
+
+      } else if(gradient.type === 'ellipse') {
+
+        // draw circle
+        var canvasRadial = document.createElement('canvas'),
+        ctxRadial = canvasRadial.getContext('2d'),
+        ri = Math.max(gradient.rx, gradient.ry),
+        di = ri * 2, imgRadial;
+
+        canvasRadial.width = canvasRadial.height = di;
+
+        grad = ctxRadial.createRadialGradient(gradient.rx, gradient.ry, 0, gradient.rx, gradient.ry, ri);
+
+        for (i = 0, len = gradient.colorStops.length; i < len; i+=1) {
+          try {
+            grad.addColorStop(gradient.colorStops[i].stop, gradient.colorStops[i].color);
+          }
+          catch(e) {
+            h2clog(['failed to add color stop: ', e, '; tried to add: ', gradient.colorStops[i], '; stop: ', i, '; in: ', src]);
+          }
+        }
+
+        ctxRadial.fillStyle = grad;
+        ctxRadial.fillRect(0, 0, di, di);
+
+        ctx.fillStyle = gradient.colorStops[i - 1].color;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(canvasRadial, gradient.cx - gradient.rx, gradient.cy - gradient.ry, 2 * gradient.rx, 2 * gradient.ry);
+
+      }
+    }
+
+    return canvas;
+  };
+
+  _html2canvas.Generate.ListAlpha = function(number) {
+    var tmp = "",
+    modulus;
+
+    do {
+      modulus = number % 26;
+      tmp = String.fromCharCode((modulus) + 64) + tmp;
+      number = number / 26;
+    }while((number*26) > 26);
+
+    return tmp;
+  };
+
+  _html2canvas.Generate.ListRoman = function(number) {
+    var romanArray = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"],
+    decimal = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1],
+    roman = "",
+    v,
+    len = romanArray.length;
+
+    if (number <= 0 || number >= 4000) {
+      return number;
+    }
+
+    for (v=0; v < len; v+=1) {
+      while (number >= decimal[v]) {
+        number -= decimal[v];
+        roman += romanArray[v];
+      }
+    }
+
+    return roman;
+
+  };
+
+})();
+_html2canvas.Parse = function (images, options) {
+  window.scroll(0,0);
+
+  var element = (( options.elements === undefined ) ? document.body : options.elements[0]), // select body by default
+  numDraws = 0,
+  doc = element.ownerDocument,
+  support = _html2canvas.Util.Support(options, doc),
+  ignoreElementsRegExp = new RegExp("(" + options.ignoreElements + ")"),
+  body = doc.body,
+  getCSS = _html2canvas.Util.getCSS,
+  pseudoHide = "___html2canvas___pseudoelement",
+  hidePseudoElements = doc.createElement('style');
+
+  hidePseudoElements.innerHTML = '.' + pseudoHide + '-before:before { content: "" !important; display: none !important; }' +
+  '.' + pseudoHide + '-after:after { content: "" !important; display: none !important; }';
+
+  body.appendChild(hidePseudoElements);
+
+  images = images || {};
+
+  function documentWidth () {
+    return Math.max(
+      Math.max(doc.body.scrollWidth, doc.documentElement.scrollWidth),
+      Math.max(doc.body.offsetWidth, doc.documentElement.offsetWidth),
+      Math.max(doc.body.clientWidth, doc.documentElement.clientWidth)
+      );
+  }
+
+  function documentHeight () {
+    return Math.max(
+      Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight),
+      Math.max(doc.body.offsetHeight, doc.documentElement.offsetHeight),
+      Math.max(doc.body.clientHeight, doc.documentElement.clientHeight)
+      );
+  }
+
+  function getCSSInt(element, attribute) {
+    var val = parseInt(getCSS(element, attribute), 10);
+    return (isNaN(val)) ? 0 : val; // borders in old IE are throwing 'medium' for demo.html
+  }
+
+  function renderRect (ctx, x, y, w, h, bgcolor) {
+    if (bgcolor !== "transparent"){
+      ctx.setVariable("fillStyle", bgcolor);
+      ctx.fillRect(x, y, w, h);
+      numDraws+=1;
+    }
+  }
+
+  function textTransform (text, transform) {
+    switch(transform){
+      case "lowercase":
+        return text.toLowerCase();
+      case "capitalize":
+        return text.replace( /(^|\s|:|-|\(|\))([a-z])/g , function (m, p1, p2) {
+          if (m.length > 0) {
+            return p1 + p2.toUpperCase();
+          }
+        } );
+      case "uppercase":
+        return text.toUpperCase();
+      default:
+        return text;
+    }
+  }
+
+  function noLetterSpacing(letter_spacing) {
+    return (/^(normal|none|0px)$/.test(letter_spacing));
+  }
+
+  function drawText(currentText, x, y, ctx){
+    if (currentText !== null && _html2canvas.Util.trimText(currentText).length > 0) {
+      ctx.fillText(currentText, x, y);
+      numDraws+=1;
+    }
+  }
+
+  function setTextVariables(ctx, el, text_decoration, color) {
+    var align = false,
+    bold = getCSS(el, "fontWeight"),
+    family = getCSS(el, "fontFamily"),
+    size = getCSS(el, "fontSize");
+
+    switch(parseInt(bold, 10)){
+      case 401:
+        bold = "bold";
+        break;
+      case 400:
+        bold = "normal";
+        break;
+    }
+
+    ctx.setVariable("fillStyle", color);
+    ctx.setVariable("font", [getCSS(el, "fontStyle"), getCSS(el, "fontVariant"), bold, size, family].join(" "));
+    ctx.setVariable("textAlign", (align) ? "right" : "left");
+
+    if (text_decoration !== "none"){
+      return _html2canvas.Util.Font(family, size, doc);
+    }
+  }
+
+  function renderTextDecoration(ctx, text_decoration, bounds, metrics, color) {
+    switch(text_decoration) {
+      case "underline":
+        // Draws a line at the baseline of the font
+        // TODO As some browsers display the line as more than 1px if the font-size is big, need to take that into account both in position and size
+        renderRect(ctx, bounds.left, Math.round(bounds.top + metrics.baseline + metrics.lineWidth), bounds.width, 1, color);
+        break;
+      case "overline":
+        renderRect(ctx, bounds.left, Math.round(bounds.top), bounds.width, 1, color);
+        break;
+      case "line-through":
+        // TODO try and find exact position for line-through
+        renderRect(ctx, bounds.left, Math.ceil(bounds.top + metrics.middle + metrics.lineWidth), bounds.width, 1, color);
+        break;
+    }
+  }
+
+  function getTextBounds(state, text, textDecoration, isLast) {
+    var bounds;
+    if (support.rangeBounds) {
+      if (textDecoration !== "none" || _html2canvas.Util.trimText(text).length !== 0) {
+        bounds = textRangeBounds(text, state.node, state.textOffset);
+      }
+      state.textOffset += text.length;
+    } else if (state.node && typeof state.node.nodeValue === "string" ){
+      var newTextNode = (isLast) ? state.node.splitText(text.length) : null;
+      bounds = textWrapperBounds(state.node);
+      state.node = newTextNode;
+    }
+    return bounds;
+  }
+
+  function textRangeBounds(text, textNode, textOffset) {
+    var range = doc.createRange();
+    range.setStart(textNode, textOffset);
+    range.setEnd(textNode, textOffset + text.length);
+    return range.getBoundingClientRect();
+  }
+
+  function textWrapperBounds(oldTextNode) {
+    var parent = oldTextNode.parentNode,
+    wrapElement = doc.createElement('wrapper'),
+    backupText = oldTextNode.cloneNode(true);
+
+    wrapElement.appendChild(oldTextNode.cloneNode(true));
+    parent.replaceChild(wrapElement, oldTextNode);
+
+    var bounds = _html2canvas.Util.Bounds(wrapElement);
+    parent.replaceChild(backupText, wrapElement);
+    return bounds;
+  }
+
+  function renderText(el, textNode, stack) {
+    var ctx = stack.ctx,
+    color = getCSS(el, "color"),
+    textDecoration = getCSS(el, "textDecoration"),
+    textAlign = getCSS(el, "textAlign"),
+    metrics,
+    textList,
+    state = {
+      node: textNode,
+      textOffset: 0
+    };
+
+    if (_html2canvas.Util.trimText(textNode.nodeValue).length > 0) {
+      textNode.nodeValue = textTransform(textNode.nodeValue, getCSS(el, "textTransform"));
+      textAlign = textAlign.replace(["-webkit-auto"],["auto"]);
+
+      textList = (!options.letterRendering && /^(left|right|justify|auto)$/.test(textAlign) && noLetterSpacing(getCSS(el, "letterSpacing"))) ?
+      textNode.nodeValue.split(/(\b| )/)
+      : textNode.nodeValue.split("");
+
+      metrics = setTextVariables(ctx, el, textDecoration, color);
+
+      if (options.chinese) {
+        textList.forEach(function(word, index) {
+          if (/.*[\u4E00-\u9FA5].*$/.test(word)) {
+            word = word.split("");
+            word.unshift(index, 1);
+            textList.splice.apply(textList, word);
+          }
+        });
+      }
+
+      textList.forEach(function(text, index) {
+        var bounds = getTextBounds(state, text, textDecoration, (index < textList.length - 1));
+        if (bounds) {
+          drawText(text, bounds.left, bounds.bottom, ctx);
+          renderTextDecoration(ctx, textDecoration, bounds, metrics, color);
+        }
+      });
+    }
+  }
+
+  function listPosition (element, val) {
+    var boundElement = doc.createElement( "boundelement" ),
+    originalType,
+    bounds;
+
+    boundElement.style.display = "inline";
+
+    originalType = element.style.listStyleType;
+    element.style.listStyleType = "none";
+
+    boundElement.appendChild(doc.createTextNode(val));
+
+    element.insertBefore(boundElement, element.firstChild);
+
+    bounds = _html2canvas.Util.Bounds(boundElement);
+    element.removeChild(boundElement);
+    element.style.listStyleType = originalType;
+    return bounds;
+  }
+
+  function elementIndex( el ) {
+    var i = -1,
+    count = 1,
+    childs = el.parentNode.childNodes;
+
+    if (el.parentNode) {
+      while( childs[ ++i ] !== el ) {
+        if ( childs[ i ].nodeType === 1 ) {
+          count++;
+        }
+      }
+      return count;
+    } else {
+      return -1;
+    }
+  }
+
+  function listItemText(element, type) {
+    var currentIndex = elementIndex(element),
+    text;
+    switch(type){
+      case "decimal":
+        text = currentIndex;
+        break;
+      case "decimal-leading-zero":
+        text = (currentIndex.toString().length === 1) ? currentIndex = "0" + currentIndex.toString() : currentIndex.toString();
+        break;
+      case "upper-roman":
+        text = _html2canvas.Generate.ListRoman( currentIndex );
+        break;
+      case "lower-roman":
+        text = _html2canvas.Generate.ListRoman( currentIndex ).toLowerCase();
+        break;
+      case "lower-alpha":
+        text = _html2canvas.Generate.ListAlpha( currentIndex ).toLowerCase();
+        break;
+      case "upper-alpha":
+        text = _html2canvas.Generate.ListAlpha( currentIndex );
+        break;
+    }
+
+    text += ". ";
+    return text;
+  }
+
+  function renderListItem(element, stack, elBounds) {
+    var x,
+    text,
+    ctx = stack.ctx,
+    type = getCSS(element, "listStyleType"),
+    listBounds;
+
+    if (/^(decimal|decimal-leading-zero|upper-alpha|upper-latin|upper-roman|lower-alpha|lower-greek|lower-latin|lower-roman)$/i.test(type)) {
+      text = listItemText(element, type);
+      listBounds = listPosition(element, text);
+      setTextVariables(ctx, element, "none", getCSS(element, "color"));
+
+      if (getCSS(element, "listStylePosition") === "inside") {
+        ctx.setVariable("textAlign", "left");
+        x = elBounds.left;
+      } else {
+        return;
+      }
+
+      drawText(text, x, listBounds.bottom, ctx);
+    }
+  }
+
+  function loadImage (src){
+    var img = images[src];
+    if (img && img.succeeded === true) {
+      return img.img;
+    } else {
+      return false;
+    }
+  }
+
+  function clipBounds(src, dst){
+    var x = Math.max(src.left, dst.left),
+    y = Math.max(src.top, dst.top),
+    x2 = Math.min((src.left + src.width), (dst.left + dst.width)),
+    y2 = Math.min((src.top + src.height), (dst.top + dst.height));
+
+    return {
+      left:x,
+      top:y,
+      width:x2-x,
+      height:y2-y
+    };
+  }
+
+  function setZ(zIndex, parentZ){
+    // TODO fix static elements overlapping relative/absolute elements under same stack, if they are defined after them
+    var newContext;
+    if (!parentZ){
+      newContext = h2czContext(0);
+      return newContext;
+    }
+
+    if (zIndex !== "auto"){
+      newContext = h2czContext(zIndex);
+      parentZ.children.push(newContext);
+      return newContext;
+
+    }
+
+    return parentZ;
+  }
+
+  function renderImage(ctx, element, image, bounds, borders) {
+
+    var paddingLeft = getCSSInt(element, 'paddingLeft'),
+    paddingTop = getCSSInt(element, 'paddingTop'),
+    paddingRight = getCSSInt(element, 'paddingRight'),
+    paddingBottom = getCSSInt(element, 'paddingBottom');
+
+    drawImage(
+      ctx,
+      image,
+      0, //sx
+      0, //sy
+      image.width, //sw
+      image.height, //sh
+      bounds.left + paddingLeft + borders[3].width, //dx
+      bounds.top + paddingTop + borders[0].width, // dy
+      bounds.width - (borders[1].width + borders[3].width + paddingLeft + paddingRight), //dw
+      bounds.height - (borders[0].width + borders[2].width + paddingTop + paddingBottom) //dh
+      );
+  }
+
+  function getBorderData(element) {
+    return ["Top", "Right", "Bottom", "Left"].map(function(side) {
+      return {
+        width: getCSSInt(element, 'border' + side + 'Width'),
+        color: getCSS(element, 'border' + side + 'Color')
+      };
+    });
+  }
+
+  function getBorderRadiusData(element) {
+    return ["TopLeft", "TopRight", "BottomRight", "BottomLeft"].map(function(side) {
+      return getCSS(element, 'border' + side + 'Radius');
+    });
+  }
+
+  var getCurvePoints = (function(kappa) {
+
+    return function(x, y, r1, r2) {
+      var ox = (r1) * kappa, // control point offset horizontal
+      oy = (r2) * kappa, // control point offset vertical
+      xm = x + r1, // x-middle
+      ym = y + r2; // y-middle
+      return {
+        topLeft: bezierCurve({
+          x:x,
+          y:ym
+        }, {
+          x:x,
+          y:ym - oy
+        }, {
+          x:xm - ox,
+          y:y
+        }, {
+          x:xm,
+          y:y
+        }),
+        topRight: bezierCurve({
+          x:x,
+          y:y
+        }, {
+          x:x + ox,
+          y:y
+        }, {
+          x:xm,
+          y:ym - oy
+        }, {
+          x:xm,
+          y:ym
+        }),
+        bottomRight: bezierCurve({
+          x:xm,
+          y:y
+        }, {
+          x:xm,
+          y:y + oy
+        }, {
+          x:x + ox,
+          y:ym
+        }, {
+          x:x,
+          y:ym
+        }),
+        bottomLeft: bezierCurve({
+          x:xm,
+          y:ym
+        }, {
+          x:xm - ox,
+          y:ym
+        }, {
+          x:x,
+          y:y + oy
+        }, {
+          x:x,
+          y:y
+        })
+      };
+    };
+  })(4 * ((Math.sqrt(2) - 1) / 3));
+
+  function bezierCurve(start, startControl, endControl, end) {
+
+    var lerp = function (a, b, t) {
+      return {
+        x:a.x + (b.x - a.x) * t,
+        y:a.y + (b.y - a.y) * t
+      };
+    };
+
+    return {
+      start: start,
+      startControl: startControl,
+      endControl: endControl,
+      end: end,
+      subdivide: function(t) {
+        var ab = lerp(start, startControl, t),
+        bc = lerp(startControl, endControl, t),
+        cd = lerp(endControl, end, t),
+        abbc = lerp(ab, bc, t),
+        bccd = lerp(bc, cd, t),
+        dest = lerp(abbc, bccd, t);
+        return [bezierCurve(start, ab, abbc, dest), bezierCurve(dest, bccd, cd, end)];
+      },
+      curveTo: function(borderArgs) {
+        borderArgs.push(["bezierCurve", startControl.x, startControl.y, endControl.x, endControl.y, end.x, end.y]);
+      },
+      curveToReversed: function(borderArgs) {
+        borderArgs.push(["bezierCurve", endControl.x, endControl.y, startControl.x, startControl.y, start.x, start.y]);
+      }
+    };
+  }
+
+  function parseCorner(borderArgs, radius1, radius2, corner1, corner2, x, y) {
+    if (radius1[0] > 0 || radius1[1] > 0) {
+      borderArgs.push(["line", corner1[0].start.x, corner1[0].start.y]);
+      corner1[0].curveTo(borderArgs);
+      corner1[1].curveTo(borderArgs);
+    } else {
+      borderArgs.push(["line", x, y]);
+    }
+
+    if (radius2[0] > 0 || radius2[1] > 0) {
+      borderArgs.push(["line", corner2[0].start.x, corner2[0].start.y]);
+    }
+  }
+
+  function drawSide(borderData, radius1, radius2, outer1, inner1, outer2, inner2) {
+    var borderArgs = [];
+
+    if (radius1[0] > 0 || radius1[1] > 0) {
+      borderArgs.push(["line", outer1[1].start.x, outer1[1].start.y]);
+      outer1[1].curveTo(borderArgs);
+    } else {
+      borderArgs.push([ "line", borderData.c1[0], borderData.c1[1]]);
+    }
+
+    if (radius2[0] > 0 || radius2[1] > 0) {
+      borderArgs.push(["line", outer2[0].start.x, outer2[0].start.y]);
+      outer2[0].curveTo(borderArgs);
+      borderArgs.push(["line", inner2[0].end.x, inner2[0].end.y]);
+      inner2[0].curveToReversed(borderArgs);
+    } else {
+      borderArgs.push([ "line", borderData.c2[0], borderData.c2[1]]);
+      borderArgs.push([ "line", borderData.c3[0], borderData.c3[1]]);
+    }
+
+    if (radius1[0] > 0 || radius1[1] > 0) {
+      borderArgs.push(["line", inner1[1].end.x, inner1[1].end.y]);
+      inner1[1].curveToReversed(borderArgs);
+    } else {
+      borderArgs.push([ "line", borderData.c4[0], borderData.c4[1]]);
+    }
+
+    return borderArgs;
+  }
+
+  function calculateCurvePoints(bounds, borderRadius, borders) {
+
+    var x = bounds.left,
+    y = bounds.top,
+    width = bounds.width,
+    height = bounds.height,
+
+    tlh = borderRadius[0][0],
+    tlv = borderRadius[0][1],
+    trh = borderRadius[1][0],
+    trv = borderRadius[1][1],
+    brv = borderRadius[2][0],
+    brh = borderRadius[2][1],
+    blh = borderRadius[3][0],
+    blv = borderRadius[3][1],
+
+    topWidth = width - trh,
+    rightHeight = height - brv,
+    bottomWidth = width - brh,
+    leftHeight = height - blv;
+
+    return {
+      topLeftOuter: getCurvePoints(
+        x,
+        y,
+        tlh,
+        tlv
+        ).topLeft.subdivide(0.5),
+
+      topLeftInner: getCurvePoints(
+        x + borders[3].width,
+        y + borders[0].width,
+        Math.max(0, tlh - borders[3].width),
+        Math.max(0, tlv - borders[0].width)
+        ).topLeft.subdivide(0.5),
+
+      topRightOuter: getCurvePoints(
+        x + topWidth,
+        y,
+        trh,
+        trv
+        ).topRight.subdivide(0.5),
+
+      topRightInner: getCurvePoints(
+        x + Math.min(topWidth, width + borders[3].width),
+        y + borders[0].width,
+        (topWidth > width + borders[3].width) ? 0 :trh - borders[3].width,
+        trv - borders[0].width
+        ).topRight.subdivide(0.5),
+
+      bottomRightOuter: getCurvePoints(
+        x + bottomWidth,
+        y + rightHeight,
+        brh,
+        brv
+        ).bottomRight.subdivide(0.5),
+
+      bottomRightInner: getCurvePoints(
+        x + Math.min(bottomWidth, width + borders[3].width),
+        y + Math.min(rightHeight, height + borders[0].width),
+        Math.max(0, brh - borders[1].width),
+        Math.max(0, brv - borders[2].width)
+        ).bottomRight.subdivide(0.5),
+
+      bottomLeftOuter: getCurvePoints(
+        x,
+        y + leftHeight,
+        blh,
+        blv
+        ).bottomLeft.subdivide(0.5),
+
+      bottomLeftInner: getCurvePoints(
+        x + borders[3].width,
+        y + leftHeight,
+        Math.max(0, blh - borders[3].width),
+        Math.max(0, blv - borders[2].width)
+        ).bottomLeft.subdivide(0.5)
+    };
+  }
+
+  function getBorderClip(element, borderPoints, borders, radius, bounds) {
+    var backgroundClip = getCSS(element, 'backgroundClip'),
+    borderArgs = [];
+
+    switch(backgroundClip) {
+      case "content-box":
+      case "padding-box":
+        parseCorner(borderArgs, radius[0], radius[1], borderPoints.topLeftInner, borderPoints.topRightInner, bounds.left + borders[3].width, bounds.top + borders[0].width);
+        parseCorner(borderArgs, radius[1], radius[2], borderPoints.topRightInner, borderPoints.bottomRightInner, bounds.left + bounds.width - borders[1].width, bounds.top + borders[0].width);
+        parseCorner(borderArgs, radius[2], radius[3], borderPoints.bottomRightInner, borderPoints.bottomLeftInner, bounds.left + bounds.width - borders[1].width, bounds.top + bounds.height - borders[2].width);
+        parseCorner(borderArgs, radius[3], radius[0], borderPoints.bottomLeftInner, borderPoints.topLeftInner, bounds.left + borders[3].width, bounds.top + bounds.height - borders[2].width);
+        break;
+
+      default:
+        parseCorner(borderArgs, radius[0], radius[1], borderPoints.topLeftOuter, borderPoints.topRightOuter, bounds.left, bounds.top);
+        parseCorner(borderArgs, radius[1], radius[2], borderPoints.topRightOuter, borderPoints.bottomRightOuter, bounds.left + bounds.width, bounds.top);
+        parseCorner(borderArgs, radius[2], radius[3], borderPoints.bottomRightOuter, borderPoints.bottomLeftOuter, bounds.left + bounds.width, bounds.top + bounds.height);
+        parseCorner(borderArgs, radius[3], radius[0], borderPoints.bottomLeftOuter, borderPoints.topLeftOuter, bounds.left, bounds.top + bounds.height);
+        break;
+    }
+
+    return borderArgs;
+  }
+
+  function parseBorders(element, bounds, borders){
+    var x = bounds.left,
+    y = bounds.top,
+    width = bounds.width,
+    height = bounds.height,
+    borderSide,
+    bx,
+    by,
+    bw,
+    bh,
+    borderArgs,
+    // http://www.w3.org/TR/css3-background/#the-border-radius
+    borderRadius = getBorderRadiusData(element),
+    borderPoints = calculateCurvePoints(bounds, borderRadius, borders),
+    borderData = {
+      clip: getBorderClip(element, borderPoints, borders, borderRadius, bounds),
+      borders: []
+    };
+
+    for (borderSide = 0; borderSide < 4; borderSide++) {
+
+      if (borders[borderSide].width > 0) {
+        bx = x;
+        by = y;
+        bw = width;
+        bh = height - (borders[2].width);
+
+        switch(borderSide) {
+          case 0:
+            // top border
+            bh = borders[0].width;
+
+            borderArgs = drawSide({
+              c1: [bx, by],
+              c2: [bx + bw, by],
+              c3: [bx + bw - borders[1].width, by + bh],
+              c4: [bx + borders[3].width, by + bh]
+            }, borderRadius[0], borderRadius[1],
+            borderPoints.topLeftOuter, borderPoints.topLeftInner, borderPoints.topRightOuter, borderPoints.topRightInner);
+            break;
+          case 1:
+            // right border
+            bx = x + width - (borders[1].width);
+            bw = borders[1].width;
+
+            borderArgs = drawSide({
+              c1: [bx + bw, by],
+              c2: [bx + bw, by + bh + borders[2].width],
+              c3: [bx, by + bh],
+              c4: [bx, by + borders[0].width]
+            }, borderRadius[1], borderRadius[2],
+            borderPoints.topRightOuter, borderPoints.topRightInner, borderPoints.bottomRightOuter, borderPoints.bottomRightInner);
+            break;
+          case 2:
+            // bottom border
+            by = (by + height) - (borders[2].width);
+            bh = borders[2].width;
+
+            borderArgs = drawSide({
+              c1: [bx + bw, by + bh],
+              c2: [bx, by + bh],
+              c3: [bx + borders[3].width, by],
+              c4: [bx + bw - borders[2].width, by]
+            }, borderRadius[2], borderRadius[3],
+            borderPoints.bottomRightOuter, borderPoints.bottomRightInner, borderPoints.bottomLeftOuter, borderPoints.bottomLeftInner);
+            break;
+          case 3:
+            // left border
+            bw = borders[3].width;
+
+            borderArgs = drawSide({
+              c1: [bx, by + bh + borders[2].width],
+              c2: [bx, by],
+              c3: [bx + bw, by + borders[0].width],
+              c4: [bx + bw, by + bh]
+            }, borderRadius[3], borderRadius[0],
+            borderPoints.bottomLeftOuter, borderPoints.bottomLeftInner, borderPoints.topLeftOuter, borderPoints.topLeftInner);
+            break;
+        }
+
+        borderData.borders.push({
+          args: borderArgs,
+          color: borders[borderSide].color
+        });
+
+      }
+    }
+
+    return borderData;
+  }
+
+  function createShape(ctx, args) {
+    var shape = ctx.drawShape();
+    args.forEach(function(border, index) {
+      shape[(index === 0) ? "moveTo" : border[0] + "To" ].apply(null, border.slice(1));
+    });
+    return shape;
+  }
+
+  function renderBorders(ctx, borderArgs, color) {
+    if (color !== "transparent") {
+      ctx.setVariable( "fillStyle", color);
+      createShape(ctx, borderArgs);
+      ctx.fill();
+      numDraws+=1;
+    }
+  }
+
+  function renderFormValue (el, bounds, stack){
+
+    var valueWrap = doc.createElement('valuewrap'),
+    cssPropertyArray = ['lineHeight','textAlign','fontFamily','color','fontSize','paddingLeft','paddingTop','width','height','border','borderLeftWidth','borderTopWidth'],
+    textValue,
+    textNode;
+
+    cssPropertyArray.forEach(function(property) {
+      try {
+        valueWrap.style[property] = getCSS(el, property);
+      } catch(e) {
+        // Older IE has issues with "border"
+        h2clog("html2canvas: Parse: Exception caught in renderFormValue: " + e.message);
+      }
+    });
+
+    valueWrap.style.borderColor = "black";
+    valueWrap.style.borderStyle = "solid";
+    valueWrap.style.display = "block";
+    valueWrap.style.position = "absolute";
+
+    if (/^(submit|reset|button|text|password)$/.test(el.type) || el.nodeName === "SELECT"){
+      valueWrap.style.lineHeight = getCSS(el, "height");
+    }
+
+    valueWrap.style.top = bounds.top + "px";
+    valueWrap.style.left = bounds.left + "px";
+
+    textValue = (el.nodeName === "SELECT") ? (el.options[el.selectedIndex] || 0).text : el.value;
+    if(!textValue) {
+      textValue = el.placeholder;
+    }
+
+    textNode = doc.createTextNode(textValue);
+
+    valueWrap.appendChild(textNode);
+    body.appendChild(valueWrap);
+
+    renderText(el, textNode, stack);
+    body.removeChild(valueWrap);
+  }
+
+  function drawImage (ctx) {
+    ctx.drawImage.apply(ctx, Array.prototype.slice.call(arguments, 1));
+    numDraws+=1;
+  }
+
+  function getPseudoElement(el, which) {
+    var elStyle = window.getComputedStyle(el, which);
+    if(!elStyle || !elStyle.content || elStyle.content === "none" || elStyle.content === "-moz-alt-content") {
+      return;
+    }
+    var content = elStyle.content + '',
+    first = content.substr( 0, 1 );
+    //strips quotes
+    if(first === content.substr( content.length - 1 ) && first.match(/'|"/)) {
+      content = content.substr( 1, content.length - 2 );
+    }
+
+    var isImage = content.substr( 0, 3 ) === 'url',
+    elps = document.createElement( isImage ? 'img' : 'span' );
+
+    elps.className = pseudoHide + "-before " + pseudoHide + "-after";
+
+    Object.keys(elStyle).filter(indexedProperty).forEach(function(prop) {
+      elps.style[prop] = elStyle[prop];
+    });
+
+    if(isImage) {
+      elps.src = _html2canvas.Util.parseBackgroundImage(content)[0].args[0];
+    } else {
+      elps.innerHTML = content;
+    }
+    return elps;
+  }
+
+  function indexedProperty(property) {
+    return (isNaN(window.parseInt(property, 10)));
+  }
+
+  function injectPseudoElements(el, stack) {
+    var before = getPseudoElement(el, ':before'),
+    after = getPseudoElement(el, ':after');
+    if(!before && !after) {
+      return;
+    }
+
+    if(before) {
+      el.className += " " + pseudoHide + "-before";
+      el.parentNode.insertBefore(before, el);
+      parseElement(before, stack, true);
+      el.parentNode.removeChild(before);
+      el.className = el.className.replace(pseudoHide + "-before", "").trim();
+    }
+
+    if (after) {
+      el.className += " " + pseudoHide + "-after";
+      el.appendChild(after);
+      parseElement(after, stack, true);
+      el.removeChild(after);
+      el.className = el.className.replace(pseudoHide + "-after", "").trim();
+    }
+
+  }
+
+  function renderBackgroundRepeat(ctx, image, backgroundPosition, bounds) {
+    var offsetX = Math.round(bounds.left + backgroundPosition.left),
+    offsetY = Math.round(bounds.top + backgroundPosition.top);
+
+    ctx.createPattern(image);
+    ctx.translate(offsetX, offsetY);
+    ctx.fill();
+    ctx.translate(-offsetX, -offsetY);
+  }
+
+  function backgroundRepeatShape(ctx, image, backgroundPosition, bounds, left, top, width, height) {
+    var args = [];
+    args.push(["line", Math.round(left), Math.round(top)]);
+    args.push(["line", Math.round(left + width), Math.round(top)]);
+    args.push(["line", Math.round(left + width), Math.round(height + top)]);
+    args.push(["line", Math.round(left), Math.round(height + top)]);
+    createShape(ctx, args);
+    ctx.save();
+    ctx.clip();
+    renderBackgroundRepeat(ctx, image, backgroundPosition, bounds);
+    ctx.restore();
+  }
+
+  function renderBackgroundColor(ctx, backgroundBounds, bgcolor) {
+    renderRect(
+      ctx,
+      backgroundBounds.left,
+      backgroundBounds.top,
+      backgroundBounds.width,
+      backgroundBounds.height,
+      bgcolor
+      );
+  }
+
+  function renderBackgroundRepeating(el, bounds, ctx, image, imageIndex) {
+    var backgroundSize = _html2canvas.Util.BackgroundSize(el, bounds, image, imageIndex),
+    backgroundPosition = _html2canvas.Util.BackgroundPosition(el, bounds, image, imageIndex, backgroundSize),
+    backgroundRepeat = getCSS(el, "backgroundRepeat").split(",").map(function(value) {
+      return value.trim();
+    });
+
+    image = resizeImage(image, backgroundSize);
+
+    backgroundRepeat = backgroundRepeat[imageIndex] || backgroundRepeat[0];
+
+    switch (backgroundRepeat) {
+      case "repeat-x":
+        backgroundRepeatShape(ctx, image, backgroundPosition, bounds,
+          bounds.left, bounds.top + backgroundPosition.top, 99999, image.height);
+        break;
+
+      case "repeat-y":
+        backgroundRepeatShape(ctx, image, backgroundPosition, bounds,
+          bounds.left + backgroundPosition.left, bounds.top, image.width, 99999);
+        break;
+
+      case "no-repeat":
+        backgroundRepeatShape(ctx, image, backgroundPosition, bounds,
+          bounds.left + backgroundPosition.left, bounds.top + backgroundPosition.top, image.width, image.height);
+        break;
+
+      default:
+        renderBackgroundRepeat(ctx, image, backgroundPosition, {
+          top: bounds.top,
+          left: bounds.left,
+          width: image.width,
+          height: image.height
+        });
+        break;
+    }
+  }
+
+  function renderBackgroundImage(element, bounds, ctx) {
+    var backgroundImage = getCSS(element, "backgroundImage"),
+    backgroundImages = _html2canvas.Util.parseBackgroundImage(backgroundImage),
+    image,
+    imageIndex = backgroundImages.length;
+
+    while(imageIndex--) {
+      backgroundImage = backgroundImages[imageIndex];
+
+      if (!backgroundImage.args || backgroundImage.args.length === 0) {
+        continue;
+      }
+
+      var key = backgroundImage.method === 'url' ?
+      backgroundImage.args[0] :
+      backgroundImage.value;
+
+      image = loadImage(key);
+
+      // TODO add support for background-origin
+      if (image) {
+        renderBackgroundRepeating(element, bounds, ctx, image, imageIndex);
+      } else {
+        h2clog("html2canvas: Error loading background:", backgroundImage);
+      }
+    }
+  }
+
+  function resizeImage(image, bounds) {
+    if(image.width === bounds.width && image.height === bounds.height) {
+      return image;
+    }
+
+    var ctx, canvas = doc.createElement('canvas');
+    canvas.width = bounds.width;
+    canvas.height = bounds.height;
+    ctx = canvas.getContext("2d");
+    drawImage(ctx, image, 0, 0, image.width, image.height, 0, 0, bounds.width, bounds.height );
+    return canvas;
+  }
+
+  function setOpacity(ctx, element, parentStack) {
+    var opacity = getCSS(element, "opacity") * ((parentStack) ? parentStack.opacity : 1);
+    ctx.setVariable("globalAlpha", opacity);
+    return opacity;
+  }
+
+  function createStack(element, parentStack, bounds) {
+
+    var ctx = h2cRenderContext((!parentStack) ? documentWidth() : bounds.width , (!parentStack) ? documentHeight() : bounds.height),
+    stack = {
+      ctx: ctx,
+      zIndex: setZ(getCSS(element, "zIndex"), (parentStack) ? parentStack.zIndex : null),
+      opacity: setOpacity(ctx, element, parentStack),
+      cssPosition: getCSS(element, "position"),
+      borders: getBorderData(element),
+      clip: (parentStack && parentStack.clip) ? _html2canvas.Util.Extend( {}, parentStack.clip ) : null
+    };
+
+    // TODO correct overflow for absolute content residing under a static position
+    if (options.useOverflow === true && /(hidden|scroll|auto)/.test(getCSS(element, "overflow")) === true && /(BODY)/i.test(element.nodeName) === false){
+      stack.clip = (stack.clip) ? clipBounds(stack.clip, bounds) : bounds;
+    }
+
+    stack.zIndex.children.push(stack);
+
+    return stack;
+  }
+
+  function getBackgroundBounds(borders, bounds, clip) {
+    var backgroundBounds = {
+      left: bounds.left + borders[3].width,
+      top: bounds.top + borders[0].width,
+      width: bounds.width - (borders[1].width + borders[3].width),
+      height: bounds.height - (borders[0].width + borders[2].width)
+    };
+
+    if (clip) {
+      backgroundBounds = clipBounds(backgroundBounds, clip);
+    }
+
+    return backgroundBounds;
+  }
+
+  function renderElement(element, parentStack, pseudoElement){
+    var bounds = _html2canvas.Util.Bounds(element),
+    image,
+    bgcolor = (ignoreElementsRegExp.test(element.nodeName)) ? "#efefef" : getCSS(element, "backgroundColor"),
+    stack = createStack(element, parentStack, bounds),
+    borders = stack.borders,
+    ctx = stack.ctx,
+    backgroundBounds = getBackgroundBounds(borders, bounds, stack.clip),
+    borderData = parseBorders(element, bounds, borders);
+
+    createShape(ctx, borderData.clip);
+
+    ctx.save();
+    ctx.clip();
+
+    if (backgroundBounds.height > 0 && backgroundBounds.width > 0){
+      renderBackgroundColor(ctx, bounds, bgcolor);
+      renderBackgroundImage(element, backgroundBounds, ctx);
+    }
+
+    ctx.restore();
+
+    borderData.borders.forEach(function(border) {
+      renderBorders(ctx, border.args, border.color);
+    });
+
+    if (!pseudoElement) {
+      injectPseudoElements(element, stack);
+    }
+
+    switch(element.nodeName){
+      case "IMG":
+        if ((image = loadImage(element.getAttribute('src')))) {
+          renderImage(ctx, element, image, bounds, borders);
+        } else {
+          h2clog("html2canvas: Error loading <img>:" + element.getAttribute('src'));
+        }
+        break;
+      case "INPUT":
+        // TODO add all relevant type's, i.e. HTML5 new stuff
+        // todo add support for placeholder attribute for browsers which support it
+        if (/^(text|url|email|submit|button|reset)$/.test(element.type) && (element.value || element.placeholder).length > 0){
+          renderFormValue(element, bounds, stack);
+        }
+        break;
+      case "TEXTAREA":
+        if ((element.value || element.placeholder || "").length > 0){
+          renderFormValue(element, bounds, stack);
+        }
+        break;
+      case "SELECT":
+        if ((element.options||element.placeholder || "").length > 0){
+          renderFormValue(element, bounds, stack);
+        }
+        break;
+      case "LI":
+        renderListItem(element, stack, backgroundBounds);
+        break;
+      case "CANVAS":
+        renderImage(ctx, element, element, bounds, borders);
+        break;
+    }
+
+    return stack;
+  }
+
+  function isElementVisible(element) {
+    return (getCSS(element, 'display') !== "none" && getCSS(element, 'visibility') !== "hidden" && !element.hasAttribute("data-html2canvas-ignore"));
+  }
+
+  function parseElement (el, stack, pseudoElement) {
+
+    if (isElementVisible(el)) {
+      stack = renderElement(el, stack, pseudoElement) || stack;
+      if (!ignoreElementsRegExp.test(el.nodeName)) {
+        _html2canvas.Util.Children(el).forEach(function(node) {
+          if (node.nodeType === 1) {
+            parseElement(node, stack, pseudoElement);
+          } else if (node.nodeType === 3) {
+            renderText(el, node, stack);
+          }
+        });
+      }
+    }
+  }
+
+  function svgDOMRender(body, stack) {
+    var img = new Image(),
+    docWidth = documentWidth(),
+    docHeight = documentHeight(),
+    html = "";
+
+    function parseDOM(el) {
+      var children = _html2canvas.Util.Children( el ),
+      len = children.length,
+      attr,
+      a,
+      alen,
+      elm,
+      i;
+      for ( i = 0; i < len; i+=1 ) {
+        elm = children[ i ];
+        if ( elm.nodeType === 3 ) {
+          // Text node
+          html += elm.nodeValue.replace(/</g,"&lt;").replace(/>/g,"&gt;");
+        } else if ( elm.nodeType === 1 ) {
+          // Element
+          if ( !/^(script|meta|title)$/.test(elm.nodeName.toLowerCase()) ) {
+
+            html += "<" + elm.nodeName.toLowerCase();
+
+            // add attributes
+            if ( elm.hasAttributes() ) {
+              attr = elm.attributes;
+              alen = attr.length;
+              for ( a = 0; a < alen; a+=1 ) {
+                html += " " + attr[ a ].name + '="' + attr[ a ].value + '"';
+              }
+            }
+
+
+            html += '>';
+
+            parseDOM( elm );
+
+
+            html += "</" + elm.nodeName.toLowerCase() + ">";
+          }
+        }
+
+      }
+
+    }
+
+    parseDOM(body);
+    img.src = [
+    "data:image/svg+xml,",
+    "<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='" + docWidth + "' height='" + docHeight + "'>",
+    "<foreignObject width='" + docWidth + "' height='" + docHeight + "'>",
+    "<html xmlns='http://www.w3.org/1999/xhtml' style='margin:0;'>",
+    html.replace(/\#/g,"%23"),
+    "</html>",
+    "</foreignObject>",
+    "</svg>"
+    ].join("");
+
+    img.onload = function() {
+      stack.svgRender = img;
+    };
+
+  }
+
+  function init() {
+    var stack = renderElement(element, null);
+
+    if (support.svgRendering) {
+      svgDOMRender(document.documentElement, stack);
+    }
+
+    Array.prototype.slice.call(element.children, 0).forEach(function(childElement) {
+      parseElement(childElement, stack);
+    });
+
+    stack.backgroundColor = getCSS(document.documentElement, "backgroundColor");
+    body.removeChild(hidePseudoElements);
+    return stack;
+  }
+
+  return init();
+};
+
+function h2czContext(zindex) {
+  return {
+    zindex: zindex,
+    children: []
+  };
+}
+_html2canvas.Preload = function( options ) {
+
+  var images = {
+    numLoaded: 0,   // also failed are counted here
+    numFailed: 0,
+    numTotal: 0,
+    cleanupDone: false
+  },
+  pageOrigin,
+  methods,
+  i,
+  count = 0,
+  element = options.elements[0] || document.body,
+  doc = element.ownerDocument,
+  domImages = doc.images, // TODO probably should limit it to images present in the element only
+  imgLen = domImages.length,
+  link = doc.createElement("a"),
+  supportCORS = (function( img ){
+    return (img.crossOrigin !== undefined);
+  })(new Image()),
+  timeoutTimer;
+
+  link.href = window.location.href;
+  pageOrigin  = link.protocol + link.host;
+
+  function isSameOrigin(url){
+    link.href = url;
+    link.href = link.href; // YES, BELIEVE IT OR NOT, that is required for IE9 - http://jsfiddle.net/niklasvh/2e48b/
+    var origin = link.protocol + link.host;
+    return (origin === pageOrigin);
+  }
+
+  function start(){
+    h2clog("html2canvas: start: images: " + images.numLoaded + " / " + images.numTotal + " (failed: " + images.numFailed + ")");
+    if (!images.firstRun && images.numLoaded >= images.numTotal){
+      h2clog("Finished loading images: # " + images.numTotal + " (failed: " + images.numFailed + ")");
+
+      if (typeof options.complete === "function"){
+        options.complete(images);
+      }
+
+    }
+  }
+
+  // TODO modify proxy to serve images with CORS enabled, where available
+  function proxyGetImage(url, img, imageObj){
+    var callback_name,
+    scriptUrl = options.proxy,
+    script;
+
+    link.href = url;
+    url = link.href; // work around for pages with base href="" set - WARNING: this may change the url
+
+    callback_name = 'html2canvas_' + (count++);
+    imageObj.callbackname = callback_name;
+
+    if (scriptUrl.indexOf("?") > -1) {
+      scriptUrl += "&";
+    } else {
+      scriptUrl += "?";
+    }
+    scriptUrl += 'url=' + encodeURIComponent(url) + '&callback=' + callback_name;
+    script = doc.createElement("script");
+
+    window[callback_name] = function(a){
+      if (a.substring(0,6) === "error:"){
+        imageObj.succeeded = false;
+        images.numLoaded++;
+        images.numFailed++;
+        start();
+      } else {
+        setImageLoadHandlers(img, imageObj);
+        img.src = a;
+      }
+      window[callback_name] = undefined; // to work with IE<9  // NOTE: that the undefined callback property-name still exists on the window object (for IE<9)
+      try {
+        delete window[callback_name];  // for all browser that support this
+      } catch(ex) {}
+      script.parentNode.removeChild(script);
+      script = null;
+      delete imageObj.script;
+      delete imageObj.callbackname;
+    };
+
+    script.setAttribute("type", "text/javascript");
+    script.setAttribute("src", scriptUrl);
+    imageObj.script = script;
+    window.document.body.appendChild(script);
+
+  }
+
+  function loadPseudoElement(element, type) {
+    var style = window.getComputedStyle(element, type),
+    content = style.content;
+    if (content.substr(0, 3) === 'url') {
+      methods.loadImage(_html2canvas.Util.parseBackgroundImage(content)[0].args[0]);
+    }
+    loadBackgroundImages(style.backgroundImage, element);
+  }
+
+  function loadPseudoElementImages(element) {
+    loadPseudoElement(element, ":before");
+    loadPseudoElement(element, ":after");
+  }
+
+  function loadGradientImage(backgroundImage, bounds) {
+    var img = _html2canvas.Generate.Gradient(backgroundImage, bounds);
+
+    if (img !== undefined){
+      images[backgroundImage] = {
+        img: img,
+        succeeded: true
+      };
+      images.numTotal++;
+      images.numLoaded++;
+      start();
+    }
+  }
+
+  function invalidBackgrounds(background_image) {
+    return (background_image && background_image.method && background_image.args && background_image.args.length > 0 );
+  }
+
+  function loadBackgroundImages(background_image, el) {
+    var bounds;
+
+    _html2canvas.Util.parseBackgroundImage(background_image).filter(invalidBackgrounds).forEach(function(background_image) {
+      if (background_image.method === 'url') {
+        methods.loadImage(background_image.args[0]);
+      } else if(background_image.method.match(/\-?gradient$/)) {
+        if(bounds === undefined) {
+          bounds = _html2canvas.Util.Bounds(el);
+        }
+        loadGradientImage(background_image.value, bounds);
+      }
+    });
+  }
+
+  function getImages (el) {
+    var elNodeType = false;
+
+    // Firefox fails with permission denied on pages with iframes
+    try {
+      _html2canvas.Util.Children(el).forEach(function(img) {
+        getImages(img);
+      });
+    }
+    catch( e ) {}
+
+    try {
+      elNodeType = el.nodeType;
+    } catch (ex) {
+      elNodeType = false;
+      h2clog("html2canvas: failed to access some element's nodeType - Exception: " + ex.message);
+    }
+
+    if (elNodeType === 1 || elNodeType === undefined) {
+      loadPseudoElementImages(el);
+      try {
+        loadBackgroundImages(_html2canvas.Util.getCSS(el, 'backgroundImage'), el);
+      } catch(e) {
+        h2clog("html2canvas: failed to get background-image - Exception: " + e.message);
+      }
+      loadBackgroundImages(el);
+    }
+  }
+
+  function setImageLoadHandlers(img, imageObj) {
+    img.onload = function() {
+      if ( imageObj.timer !== undefined ) {
+        // CORS succeeded
+        window.clearTimeout( imageObj.timer );
+      }
+
+      images.numLoaded++;
+      imageObj.succeeded = true;
+      img.onerror = img.onload = null;
+      start();
+    };
+    img.onerror = function() {
+      if (img.crossOrigin === "anonymous") {
+        // CORS failed
+        window.clearTimeout( imageObj.timer );
+
+        // let's try with proxy instead
+        if ( options.proxy ) {
+          var src = img.src;
+          img = new Image();
+          imageObj.img = img;
+          img.src = src;
+
+          proxyGetImage( img.src, img, imageObj );
+          return;
+        }
+      }
+
+      images.numLoaded++;
+      images.numFailed++;
+      imageObj.succeeded = false;
+      img.onerror = img.onload = null;
+      start();
+    };
+  }
+
+  methods = {
+    loadImage: function( src ) {
+      var img, imageObj;
+      if ( src && images[src] === undefined ) {
+        img = new Image();
+        if ( src.match(/data:image\/.*;base64,/i) ) {
+          img.src = src.replace(/url\(['"]{0,}|['"]{0,}\)$/ig, '');
+          imageObj = images[src] = {
+            img: img
+          };
+          images.numTotal++;
+          setImageLoadHandlers(img, imageObj);
+        } else if ( isSameOrigin( src ) || options.allowTaint ===  true ) {
+          imageObj = images[src] = {
+            img: img
+          };
+          images.numTotal++;
+          setImageLoadHandlers(img, imageObj);
+          img.src = src;
+        } else if ( supportCORS && !options.allowTaint && options.useCORS ) {
+          // attempt to load with CORS
+
+          img.crossOrigin = "anonymous";
+          imageObj = images[src] = {
+            img: img
+          };
+          images.numTotal++;
+          setImageLoadHandlers(img, imageObj);
+          img.src = src;
+
+          // work around for https://bugs.webkit.org/show_bug.cgi?id=80028
+          img.customComplete = function () {
+            if (!this.img.complete) {
+              this.timer = window.setTimeout(this.img.customComplete, 100);
+            } else {
+              this.img.onerror();
+            }
+          }.bind(imageObj);
+          img.customComplete();
+
+        } else if ( options.proxy ) {
+          imageObj = images[src] = {
+            img: img
+          };
+          images.numTotal++;
+          proxyGetImage( src, img, imageObj );
+        }
+      }
+
+    },
+    cleanupDOM: function(cause) {
+      var img, src;
+      if (!images.cleanupDone) {
+        if (cause && typeof cause === "string") {
+          h2clog("html2canvas: Cleanup because: " + cause);
+        } else {
+          h2clog("html2canvas: Cleanup after timeout: " + options.timeout + " ms.");
+        }
+
+        for (src in images) {
+          if (images.hasOwnProperty(src)) {
+            img = images[src];
+            if (typeof img === "object" && img.callbackname && img.succeeded === undefined) {
+              // cancel proxy image request
+              window[img.callbackname] = undefined; // to work with IE<9  // NOTE: that the undefined callback property-name still exists on the window object (for IE<9)
+              try {
+                delete window[img.callbackname];  // for all browser that support this
+              } catch(ex) {}
+              if (img.script && img.script.parentNode) {
+                img.script.setAttribute("src", "about:blank");  // try to cancel running request
+                img.script.parentNode.removeChild(img.script);
+              }
+              images.numLoaded++;
+              images.numFailed++;
+              h2clog("html2canvas: Cleaned up failed img: '" + src + "' Steps: " + images.numLoaded + " / " + images.numTotal);
+            }
+          }
+        }
+
+        // cancel any pending requests
+        if(window.stop !== undefined) {
+          window.stop();
+        } else if(document.execCommand !== undefined) {
+          document.execCommand("Stop", false);
+        }
+        if (document.close !== undefined) {
+          document.close();
+        }
+        images.cleanupDone = true;
+        if (!(cause && typeof cause === "string")) {
+          start();
+        }
+      }
+    },
+
+    renderingDone: function() {
+      if (timeoutTimer) {
+        window.clearTimeout(timeoutTimer);
+      }
+    }
+  };
+
+  if (options.timeout > 0) {
+    timeoutTimer = window.setTimeout(methods.cleanupDOM, options.timeout);
+  }
+
+  h2clog('html2canvas: Preload starts: finding background-images');
+  images.firstRun = true;
+
+  getImages(element);
+
+  h2clog('html2canvas: Preload: Finding images');
+  // load <img> images
+  for (i = 0; i < imgLen; i+=1){
+    methods.loadImage( domImages[i].getAttribute( "src" ) );
+  }
+
+  images.firstRun = false;
+  h2clog('html2canvas: Preload: Done.');
+  if ( images.numTotal === images.numLoaded ) {
+    start();
+  }
+
+  return methods;
+
+};
+function h2cRenderContext(width, height) {
+  var storage = [];
+  return {
+    storage: storage,
+    width: width,
+    height: height,
+    clip: function() {
+      storage.push({
+        type: "function",
+        name: "clip",
+        'arguments': arguments
+      });
+    },
+    translate: function() {
+      storage.push({
+        type: "function",
+        name: "translate",
+        'arguments': arguments
+      });
+    },
+    fill: function() {
+      storage.push({
+        type: "function",
+        name: "fill",
+        'arguments': arguments
+      });
+    },
+    save: function() {
+      storage.push({
+        type: "function",
+        name: "save",
+        'arguments': arguments
+      });
+    },
+    restore: function() {
+      storage.push({
+        type: "function",
+        name: "restore",
+        'arguments': arguments
+      });
+    },
+    fillRect: function () {
+      storage.push({
+        type: "function",
+        name: "fillRect",
+        'arguments': arguments
+      });
+    },
+    createPattern: function() {
+      storage.push({
+        type: "function",
+        name: "createPattern",
+        'arguments': arguments
+      });
+    },
+    drawShape: function() {
+
+      var shape = [];
+
+      storage.push({
+        type: "function",
+        name: "drawShape",
+        'arguments': shape
+      });
+
+      return {
+        moveTo: function() {
+          shape.push({
+            name: "moveTo",
+            'arguments': arguments
+          });
+        },
+        lineTo: function() {
+          shape.push({
+            name: "lineTo",
+            'arguments': arguments
+          });
+        },
+        arcTo: function() {
+          shape.push({
+            name: "arcTo",
+            'arguments': arguments
+          });
+        },
+        bezierCurveTo: function() {
+          shape.push({
+            name: "bezierCurveTo",
+            'arguments': arguments
+          });
+        },
+        quadraticCurveTo: function() {
+          shape.push({
+            name: "quadraticCurveTo",
+            'arguments': arguments
+          });
+        }
+      };
+
+    },
+    drawImage: function () {
+      storage.push({
+        type: "function",
+        name: "drawImage",
+        'arguments': arguments
+      });
+    },
+    fillText: function () {
+      storage.push({
+        type: "function",
+        name: "fillText",
+        'arguments': arguments
+      });
+    },
+    setVariable: function (variable, value) {
+      storage.push({
+        type: "variable",
+        name: variable,
+        'arguments': value
+      });
+    }
+  };
+}
+_html2canvas.Renderer = function(parseQueue, options){
+
+  function createRenderQueue(parseQueue) {
+    var queue = [];
+
+    var sortZ = function(zStack){
+      var subStacks = [],
+      stackValues = [];
+
+      zStack.children.forEach(function(stackChild) {
+        if (stackChild.children && stackChild.children.length > 0){
+          subStacks.push(stackChild);
+          stackValues.push(stackChild.zindex);
+        } else {
+          queue.push(stackChild);
+        }
+      });
+
+      stackValues.sort(function(a, b) {
+        return a - b;
+      });
+
+      stackValues.forEach(function(zValue) {
+        var index;
+
+        subStacks.some(function(stack, i){
+          index = i;
+          return (stack.zindex === zValue);
+        });
+        sortZ(subStacks.splice(index, 1)[0]);
+
+      });
+    };
+
+    sortZ(parseQueue.zIndex);
+
+    return queue;
+  }
+
+  function getRenderer(rendererName) {
+    var renderer;
+
+    if (typeof options.renderer === "string" && _html2canvas.Renderer[rendererName] !== undefined) {
+      renderer = _html2canvas.Renderer[rendererName](options);
+    } else if (typeof rendererName === "function") {
+      renderer = rendererName(options);
+    } else {
+      throw new Error("Unknown renderer");
+    }
+
+    if ( typeof renderer !== "function" ) {
+      throw new Error("Invalid renderer defined");
+    }
+    return renderer;
+  }
+
+  return getRenderer(options.renderer)(parseQueue, options, document, createRenderQueue(parseQueue), _html2canvas);
+};
+
+_html2canvas.Util.Support = function (options, doc) {
+
+  function supportSVGRendering() {
+    var img = new Image(),
+    canvas = doc.createElement("canvas"),
+    ctx = (canvas.getContext === undefined) ? false : canvas.getContext("2d");
+    if (ctx === false) {
+      return false;
+    }
+    canvas.width = canvas.height = 10;
+    img.src = [
+    "data:image/svg+xml,",
+    "<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'>",
+    "<foreignObject width='10' height='10'>",
+    "<div xmlns='http://www.w3.org/1999/xhtml' style='width:10;height:10;'>",
+    "sup",
+    "</div>",
+    "</foreignObject>",
+    "</svg>"
+    ].join("");
+    try {
+      ctx.drawImage(img, 0, 0);
+      canvas.toDataURL();
+    } catch(e) {
+      return false;
+    }
+    h2clog('html2canvas: Parse: SVG powered rendering available');
+    return true;
+  }
+
+  // Test whether we can use ranges to measure bounding boxes
+  // Opera doesn't provide valid bounds.height/bottom even though it supports the method.
+
+  function supportRangeBounds() {
+    var r, testElement, rangeBounds, rangeHeight, support = false;
+
+    if (doc.createRange) {
+      r = doc.createRange();
+      if (r.getBoundingClientRect) {
+        testElement = doc.createElement('boundtest');
+        testElement.style.height = "123px";
+        testElement.style.display = "block";
+        doc.body.appendChild(testElement);
+
+        r.selectNode(testElement);
+        rangeBounds = r.getBoundingClientRect();
+        rangeHeight = rangeBounds.height;
+
+        if (rangeHeight === 123) {
+          support = true;
+        }
+        doc.body.removeChild(testElement);
+      }
+    }
+
+    return support;
+  }
+
+  return {
+    rangeBounds: supportRangeBounds(),
+    svgRendering: options.svgRendering && supportSVGRendering()
+  };
+};
+window.html2canvas = function(elements, opts) {
+  elements = (elements.length) ? elements : [elements];
+  var queue,
+  canvas,
+  options = {
+    // general
+    logging: false,
+    elements: elements,
+    background: "#fff",
+
+    // preload options
+    proxy: null,
+    timeout: 0,    // no timeout
+    useCORS: false, // try to load images as CORS (where available), before falling back to proxy
+    allowTaint: false, // whether to allow images to taint the canvas, won't need proxy if set to true
+
+    // parse options
+    svgRendering: false, // use svg powered rendering where available (FF11+)
+    ignoreElements: "IFRAME|OBJECT|PARAM",
+    useOverflow: true,
+    letterRendering: false,
+    chinese: false,
+
+    // render options
+
+    width: null,
+    height: null,
+    taintTest: true, // do a taint test with all images before applying to canvas
+    renderer: "Canvas"
+  };
+
+  options = _html2canvas.Util.Extend(opts, options);
+
+  _html2canvas.logging = options.logging;
+  options.complete = function( images ) {
+
+    if (typeof options.onpreloaded === "function") {
+      if ( options.onpreloaded( images ) === false ) {
+        return;
+      }
+    }
+    queue = _html2canvas.Parse( images, options );
+
+    if (typeof options.onparsed === "function") {
+      if ( options.onparsed( queue ) === false ) {
+        return;
+      }
+    }
+
+    canvas = _html2canvas.Renderer( queue, options );
+
+    if (typeof options.onrendered === "function") {
+      options.onrendered( canvas );
+    }
+
+
+  };
+
+  // for pages without images, we still want this to be async, i.e. return methods before executing
+  window.setTimeout( function(){
+    _html2canvas.Preload( options );
+  }, 0 );
+
+  return {
+    render: function( queue, opts ) {
+      return _html2canvas.Renderer( queue, _html2canvas.Util.Extend(opts, options) );
+    },
+    parse: function( images, opts ) {
+      return _html2canvas.Parse( images, _html2canvas.Util.Extend(opts, options) );
+    },
+    preload: function( opts ) {
+      return _html2canvas.Preload( _html2canvas.Util.Extend(opts, options) );
+    },
+    log: h2clog
+  };
+};
+
+window.html2canvas.log = h2clog; // for renderers
+window.html2canvas.Renderer = {
+  Canvas: undefined // We are assuming this will be used
+};
+_html2canvas.Renderer.Canvas = function(options) {
+
+  options = options || {};
+
+  var doc = document,
+  safeImages = [],
+  testCanvas = document.createElement("canvas"),
+  testctx = testCanvas.getContext("2d"),
+  canvas = options.canvas || doc.createElement('canvas');
+
+
+  function createShape(ctx, args) {
+    ctx.beginPath();
+    args.forEach(function(arg) {
+      ctx[arg.name].apply(ctx, arg['arguments']);
+    });
+    ctx.closePath();
+  }
+
+  function safeImage(item) {
+    if (safeImages.indexOf(item['arguments'][0].src ) === -1) {
+      testctx.drawImage(item['arguments'][0], 0, 0);
+      try {
+        testctx.getImageData(0, 0, 1, 1);
+      } catch(e) {
+        testCanvas = doc.createElement("canvas");
+        testctx = testCanvas.getContext("2d");
+        return false;
+      }
+      safeImages.push(item['arguments'][0].src);
+    }
+    return true;
+  }
+
+  function isTransparent(backgroundColor) {
+    return (backgroundColor === "transparent" || backgroundColor === "rgba(0, 0, 0, 0)");
+  }
+
+  function renderItem(ctx, item) {
+    switch(item.type){
+      case "variable":
+        ctx[item.name] = item['arguments'];
+        break;
+      case "function":
+        if (item.name === "createPattern") {
+          if (item['arguments'][0].width > 0 && item['arguments'][0].height > 0) {
+            try {
+              ctx.fillStyle = ctx.createPattern(item['arguments'][0], "repeat");
+            }
+            catch(e) {
+              h2clog("html2canvas: Renderer: Error creating pattern", e.message);
+            }
+          }
+        } else if (item.name === "drawShape") {
+          createShape(ctx, item['arguments']);
+        } else if (item.name === "drawImage") {
+          if (item['arguments'][8] > 0 && item['arguments'][7] > 0) {
+            if (!options.taintTest || (options.taintTest && safeImage(item))) {
+              ctx.drawImage.apply( ctx, item['arguments'] );
+            }
+          }
+        } else {
+          ctx[item.name].apply(ctx, item['arguments']);
+        }
+        break;
+    }
+  }
+
+  return function(zStack, options, doc, queue, _html2canvas) {
+
+    var ctx = canvas.getContext("2d"),
+    storageContext,
+    i,
+    queueLen,
+    newCanvas,
+    bounds,
+    fstyle;
+
+    canvas.width = canvas.style.width =  options.width || zStack.ctx.width;
+    canvas.height = canvas.style.height = options.height || zStack.ctx.height;
+
+    fstyle = ctx.fillStyle;
+    ctx.fillStyle = (isTransparent(zStack.backgroundColor) && options.background !== undefined) ? options.background : zStack.backgroundColor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = fstyle;
+
+
+    if ( options.svgRendering && zStack.svgRender !== undefined ) {
+      // TODO: enable async rendering to support this
+      ctx.drawImage( zStack.svgRender, 0, 0 );
+    } else {
+      for ( i = 0, queueLen = queue.length; i < queueLen; i+=1 ) {
+        storageContext = queue.splice(0, 1)[0];
+        storageContext.canvasPosition = storageContext.canvasPosition || {};
+
+        // set common settings for canvas
+        ctx.textBaseline = "bottom";
+
+        if (storageContext.clip){
+          ctx.save();
+          ctx.beginPath();
+          // console.log(storageContext);
+          ctx.rect(storageContext.clip.left, storageContext.clip.top, storageContext.clip.width, storageContext.clip.height);
+          ctx.clip();
+        }
+
+        if (storageContext.ctx.storage) {
+          storageContext.ctx.storage.forEach(renderItem.bind(null, ctx));
+        }
+
+        if (storageContext.clip){
+          ctx.restore();
+        }
+      }
+    }
+
+    h2clog("html2canvas: Renderer: Canvas renderer done - returning canvas obj");
+
+    queueLen = options.elements.length;
+
+    if (queueLen === 1) {
+      if (typeof options.elements[0] === "object" && options.elements[0].nodeName !== "BODY") {
+        // crop image to the bounds of selected (single) element
+        bounds = _html2canvas.Util.Bounds(options.elements[0]);
+        newCanvas = doc.createElement('canvas');
+        newCanvas.width = bounds.width;
+        newCanvas.height = bounds.height;
+        ctx = newCanvas.getContext("2d");
+
+        ctx.drawImage(canvas, bounds.left, bounds.top, bounds.width, bounds.height, 0, 0, bounds.width, bounds.height);
+        canvas = null;
+        return newCanvas;
+      }
+    }
+
+    return canvas;
+  };
+};
+})(window,document);
+
+
+// JS File: src/chausset.js
+(function(html2canvas) {
+  var cropCanvas = function(sourceCanvas, x1, x2, y1, y2) {
+    var width = x2 - x1,
+      height = y2 - y1;
+
+    var canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    var context = canvas.getContext('2d');
+    context.drawImage(sourceCanvas, x1, y1, width, height, 0, 0, width, height);
+    return canvas;
+  };
+
+  var _canvas = null,
+    _overlay = null,
+    _isCropping = false,
+    _selectionRectangle = null,
+    _cropData = null;
+
+  var createOverlay = function(canvas) {
+    var overlay = document.createElement("div");
+    overlay.style.cssText = [
+      "position:fixed",
+      "height:100%", "width:100%",
+      "top:0", "left:0",
+      "z-index:100000"].join(";");
+    overlay.onmousedown = startCropping;
+    overlay.onmouseup = stopCropping;
+    overlay.onmousemove = onOverlayMouseMove
+    overlay.appendChild(canvas);
+    document.body.appendChild(overlay);
+    return overlay;
+  };
+
+  var createSelectionRectangle = function() {
+    var selectionRectangle = document.createElement("div");
+    selectionRectangle.style.cssText = [
+      "position:fixed",
+      "border : 2px dotted red",
+      "z-index:100005"].join(";");
+    selectionRectangle.onmousemove = onOverlayMouseMove;
+    selectionRectangle.onmouseup = stopCropping;
+    document.body.appendChild(selectionRectangle);
+    return selectionRectangle;
+  };
+
+  var initializeCropData = function(event) {
+    var x = event.clientX,
+      y = event.clientY;
+    _cropData = {};
+    _cropData.x1 = _cropData.x2 = x, _cropData.y1 = _cropData.y2 = y;
+  }
+
+  var updateCropData = function(event) {
+    var x = event.clientX,
+      y = event.clientY;
+    _cropData.x2 = x, _cropData.y2 = y;
+  };
+
+  var updateSelectionFromCropData = function(selection, cropData) {
+    var fixedData = fixRectData(cropData);
+    _selectionRectangle.style.top = fixedData.y1 + "px";
+    _selectionRectangle.style.left = fixedData.x1 + "px";
+    _selectionRectangle.style.height = fixedData.y2 - fixedData.y1 + "px";
+    _selectionRectangle.style.width = fixedData.x2 - fixedData.x1 + "px";
+  };
+
+  var fixRectData = function(rectData) {
+    var fixedData = {
+      x1: Math.min(rectData.x1, rectData.x2),
+      x2: Math.max(rectData.x1, rectData.x2),
+      y1: Math.min(rectData.y1, rectData.y2),
+      y2: Math.max(rectData.y1, rectData.y2),
+    };
+    return fixedData;
+  };
+
+  var startCropping = function(event) {
+    _isCropping = true;
+    _selectionRectangle = createSelectionRectangle();
+    initializeCropData(event);
+    updateSelectionFromCropData(_selectionRectangle, _cropData);
+  };
+
+  var onOverlayMouseMove = function(event) {
+    if (_isCropping) {
+      updateCropData(event);
+      updateSelectionFromCropData(_selectionRectangle, _cropData);
+    }
+  };
+
+  var stopCropping = function(event) {
+    if (_isCropping) {
+      _isCropping = false;
+      var fixedData = fixRectData(_cropData);
+      canvas = cropCanvas(_canvas, fixedData.x1, fixedData.x2, fixedData.y1, fixedData.y2);
+      renderedImage = canvas.toDataURL("image/png");
+      saveImage(renderedImage);
+    }
+  };
+  var SERVICE_URL = "http://.appspot.com/";
+
+  var saveImage = function(renderedImage) {
+    var imageData = renderedImage.replace("data:image/png;base64,", "");
+    var xhr = new XMLHttpRequest();
+    var formData = new FormData();
+
+    formData.append('data', imageData);
+    xhr.open('POST', SERVICE_URL + "__/upload", true);
+    xhr.onload = function(e) {
+      window.open(SERVICE_URL + "img/" + this.responseText);
+      _overlay.parentNode.removeChild(_overlay);
+      _selectionRectangle.parentNode.removeChild(_selectionRectangle);
+    };
+
+    xhr.send(formData);
+  };
+
+  var onload = function() {
+    // remove loader
+    var loader = document.getElementById("chausset-loader");
+
+    var proxyURL = "query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.uri%20where%20url%3D%40url&format=json",
+      protocol = "http://";
+    if (window.location.href.indexOf("https") == 0) {
+      protocol = "https://";
+    }
+    // take screenshot
+    html2canvas(
+    document.body, {
+      proxy: protocol + proxyURL,
+      onrendered: function(canvas) {
+        _canvas = canvas;
+        _overlay = createOverlay(canvas);
+        loader.style.opacity = 1;
+        loader.innerHTML = "Screenshot ready, select the area to crop";
+        window.setTimeout(function() {
+          loader.style.opacity = 0;
+        }, 2000);
+        window.setTimeout(function() {
+          loader.parentNode.removeChild(loader);
+        }, 2500);
+
+      }
+    });
+  };
+
+  onload();
 })(html2canvas)
-
-
-
-

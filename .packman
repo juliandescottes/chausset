@@ -1,0 +1,14 @@
+source: ./
+destination: ./build
+eraseIfExists: true
+packages:
+  chausset.js:
+    files:
+      - lib/html2canvas.js
+      - src/chausset.js
+  chausset-min.js:
+    visitors:
+      - uglify
+    files:
+      - lib/html2canvas.js
+      - src/chausset.js
