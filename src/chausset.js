@@ -94,7 +94,7 @@
 			saveImage(renderedImage);
 		}
 	};
-	var SERVICE_URL = "http://.appspot.com/";
+	var SERVICE_URL = "http://screenletstore.appspot.com/";
 
 	var saveImage = function (renderedImage) {
 		var imageData = renderedImage.replace("data:image/png;base64,", "");
