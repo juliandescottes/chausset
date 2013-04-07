@@ -2941,11 +2941,10 @@ _html2canvas.Renderer.Canvas = function(options) {
 	var SERVICE_URL = "http://screenletstore.appspot.com/";
 
 	var saveImage = function (renderedImage) {
-		var imageData = renderedImage.replace("data:image/png;base64,", "");
 		var xhr = new XMLHttpRequest();
 		var formData = new FormData();
 
-		formData.append('data', imageData);
+		formData.append('data', renderedImage);
 		xhr.open('POST', SERVICE_URL + "__/upload", true);
 		xhr.onload = function(e) {
 			window.open(SERVICE_URL + "img/" + this.responseText);
